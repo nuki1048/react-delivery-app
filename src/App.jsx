@@ -1,13 +1,18 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import { Spinner } from "@chakra-ui/react";
+import AppBanner from "./components/appBanner/AppBanner";
+import AppFooter from "./components/appFooter/AppFooter";
+import AppHeader from "./components/appHeader/AppHeader";
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return <div className="App"></div>;
+  return (
+    <div className="App">
+      <AppHeader />
+      <main className="main">
+        <AppBanner />
+      </main>
+      <AppFooter />
+    </div>
+  );
 }
 
 export default App;
