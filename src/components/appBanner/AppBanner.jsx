@@ -6,7 +6,7 @@ const AppBanner = () => {
   return (
     <AppContainer>
       <Box
-        w="1200px"
+        w="100%"
         h="300px"
         backgroundColor="#FFF1B8"
         mt="40px"
