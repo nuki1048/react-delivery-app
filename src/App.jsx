@@ -1,4 +1,4 @@
-import { Flex, Input } from "@chakra-ui/react";
+import { Box, Flex, Heading, Input } from "@chakra-ui/react";
 import "./App.css";
 import AppBanner from "./components/appBanner/AppBanner";
 import AppFooter from "./components/appFooter/AppFooter";
@@ -9,10 +9,17 @@ function App() {
   return (
     <>
       <AppHeader />
-      <main className="main">
+      <Box
+        as={"section"}
+        background={
+          "linear-gradient(180deg,rgba(245, 245, 245, 0) 1.04%,#f5f5f5 100%)"
+        }
+      >
         <AppBanner />
         <Flex p={"50px 0 "} justify="space-between" align="center">
-          <h3 className="font-bold text-4xl">Рестораны</h3>
+          <Heading as={"h5"} className="font-bold text-4xl">
+            Рестораны
+          </Heading>
           <Input
             placeholder="Поиск блюд и ресторанов"
             w={"306px"}
@@ -21,7 +28,7 @@ function App() {
           />
         </Flex>
         <RestaurantItem />
-      </main>
+      </Box>
       <AppFooter />
     </>
   );

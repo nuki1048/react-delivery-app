@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 import pizza from "../../assets/pizza.jpg";
 const RestaurantItem = () => {
@@ -15,10 +15,24 @@ const RestaurantItem = () => {
       p={"268px 24px 35px 24px"}
     >
       <Flex justify={"space-between"} align="center">
-        <h3 className="font-bold text-2xl">Пицца плюс</h3>
-        <div className="font-normal bg-black text-white text-sm w-14 h-5 rounded-sm flex items-center justify-center">
+        <Text fontWeight={"700"} fontSize={"24px"} lineHeight={"32px"}>
+          Пицца плюс
+        </Text>
+        <Box
+          w={"55px"}
+          h={"22px"}
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"center"}
+          borderRadius={"2px"}
+          backgroundColor={"#000"}
+          color={"#FFF"}
+          fontWeight={"400"}
+          fontSize={"12px"}
+          lineHeight={"20px"}
+        >
           50 мин
-        </div>
+        </Box>
       </Flex>
       <Flex
         w={"205px"}
@@ -26,9 +40,30 @@ const RestaurantItem = () => {
         justify={"space-between"}
         align="center"
       >
-        <div className="font-bold text-lg text-yellow-300">4.5</div>
-        <div className="font-normal text-lg text-neutral-500">От 900 ₴</div>
-        <div className="font-normal text-lg text-neutral-500">Пицца</div>
+        <Box
+          fontWeight={"700"}
+          fontSize={"18px"}
+          lineHeight={"32px"}
+          color={"#FFC107"}
+        >
+          4.5
+        </Box>
+        <Box
+          fontWeight={"400"}
+          fontSize={"18px"}
+          lineHeight={"32px"}
+          color={" #8C8C8C"}
+        >
+          От 900 ₴
+        </Box>
+        <Box
+          fontWeight={"400"}
+          fontSize={"18px"}
+          lineHeight={"32px"}
+          color={" #8C8C8C"}
+        >
+          Пицца
+        </Box>
       </Flex>
     </Box>
   );
