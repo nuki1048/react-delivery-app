@@ -1,11 +1,4 @@
-import {
-  Box,
-  Flex,
-  UnorderedList,
-  ListItem,
-  Image,
-  Link,
-} from "@chakra-ui/react";
+import { Box, Flex, UnorderedList, ListItem, Image } from "@chakra-ui/react";
 import React from "react";
 import AppLogo from "../appLogo/AppLogo";
 import AppContainer from "../appContainer/AppContainer";
@@ -31,15 +24,9 @@ const AppFooter = () => {
             <ListItem>Контакты</ListItem>
           </UnorderedList>
           <Flex w={"127px"} justify="space-between">
-            <Link href="https://www.instagram.com/">
-              <Image src={instagram} />
-            </Link>
-            <Link href="https://www.facebook.com/">
-              <Image src={facebook} />
-            </Link>
-            <Link>
-              <Image src={vk} />
-            </Link>
+            <Image src={instagram} />
+            <Image src={facebook} />
+            <Image src={vk} />
           </Flex>
         </Flex>
       </AppContainer>

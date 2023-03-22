@@ -5,12 +5,7 @@ const AppLogo = () => {
   return (
     <Box display="flex" w="100px">
       <Image src={logo} alt="Delivery Food Logo" />
-      <Heading
-        as={"h2"}
-        fontWeight={"400"}
-        fontSize={"15px"}
-        lineHeigh={"18px"}
-      >
+      <Heading as="h2" fontWeight="400" fontSize="15px" lineHeigh="18px">
         Delivery Food
       </Heading>
     </Box>

@@ -15,21 +15,21 @@ const AppBanner = () => {
         backgroundColor="#FFF1B8"
       >
         <Heading
-          as={"h1"}
-          fontWeight={"700"}
-          fontSize={"39px"}
-          lineHeight={"46px"}
-          textAlign={"left"}
+          as="h1"
+          fontWeight="700"
+          fontSize="39px"
+          lineHeight="46px"
+          textAlign="left"
         >
           Онлайн-сервис доставки еды на дом
         </Heading>
 
         <Text
-          fontWeight={"400"}
-          fontSize={"24px"}
-          lineHeigh={"28px"}
-          textAlign={"left"}
-          mt={"15px"}
+          fontWeight="400"
+          fontSize="24px"
+          lineHeigh="28px"
+          textAlign="left"
+          mt="15px"
         >
           Блюда из любимого ресторана привезет курьер в перчатках, маске и с
           антисептиком

@@ -33,11 +33,15 @@ const AppHeader = () => {
             color="gray.300"
             children="⌂"
           />
-          <Input placeholder="Адрес доставки" />
+          <Input
+            filter=" drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));"
+            borderRadius="2px"
+            placeholder="Адрес доставки"
+          />
         </InputGroup>
 
         <ButtonGroup>
-          <Button colorScheme="blue" borderRadius="2px">
+          <Button colorScheme="linkedin" borderRadius="2px">
             Войти
           </Button>
           <Button borderRadius="2px" colorScheme="grey" variant="outline">
