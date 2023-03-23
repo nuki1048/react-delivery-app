@@ -4,7 +4,7 @@ import RestaurantPage from "../pages/restaurantPage/RestaurantPage";
 function App() {
   return (
     <>
-      <RestaurantPage />
+      <MainPage />
     </>
   );
 }

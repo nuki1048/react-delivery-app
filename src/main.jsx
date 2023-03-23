@@ -24,7 +24,15 @@ const styles = {
     },
   },
 };
-const theme = extendTheme({ colors, fonts, styles });
+
+const sizes = {
+  sizes: {
+    cartW: "780px",
+    cartH: "552px",
+    loginW: "350px",
+  },
+};
+const theme = extendTheme({ colors, fonts, styles, sizes });
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ChakraProvider theme={theme}>
     <Box>
