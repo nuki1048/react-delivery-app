@@ -7,7 +7,7 @@ import instagram from "../../assets/instagram.svg";
 import vk from "../../assets/vk.svg";
 const AppFooter = () => {
   return (
-    <Box h="150px" p="60px 0 ">
+    <Box h="150px" p="60px 0">
       <AppContainer>
         <Flex w="1200px" align="center" justify={"space-between"}>
           <AppLogo />

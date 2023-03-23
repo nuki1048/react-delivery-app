@@ -41,7 +41,7 @@ const AppHeader = () => {
         </InputGroup>
 
         <ButtonGroup>
-          <Button colorScheme="linkedin" borderRadius="2px">
+          <Button backgroundColor="brand.blue" color="#fff" borderRadius="2px">
             Войти
           </Button>
           <Button borderRadius="2px" colorScheme="grey" variant="outline">

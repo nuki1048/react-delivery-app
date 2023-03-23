@@ -11,6 +11,7 @@ const MenuItem = () => {
       borderRadius="7px"
       background={`url(${sushi}) top center no-repeat`}
       backgroundColor="#FFF"
+      boxShadow="0px 4px 12px rgba(0, 0, 0, 0.05)"
     >
       <Flex flexDirection="column" textAlign="left">
         <Heading as="h3" fontWeight="400" fontSize="24px" lineHeight="32px">
@@ -33,7 +34,13 @@ const MenuItem = () => {
         justify="space-between"
         align="center"
       >
-        <Button w="124px" h="40px" colorScheme="linkedin" borderRadius="2px">
+        <Button
+          w="124px"
+          h="40px"
+          backgroundColor="brand.blue"
+          color="#fff"
+          borderRadius="2px"
+        >
           В корзину
         </Button>
         <Text fontWeight="700" fontSize="20px" lineHeight="32px">
