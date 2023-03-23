@@ -8,13 +8,13 @@ const CartItem = () => {
           Ролл угорь стандарт
         </Text>
         <Flex w="215px" justify="space-between" align="center">
-          <Text fontWeight="700" fontSize="20px" lineHeight="32px">
+          <Text mr="auto" fontWeight="700" fontSize="20px" lineHeight="32px">
             250 ₴
           </Text>
           <Button colorScheme="linkedin" variant="outline">
             -
           </Button>
-          <Box>1</Box>
+          <Box m="0 13px 0 13px">1</Box>
           <Button colorScheme="linkedin" variant="outline">
             +
           </Button>
