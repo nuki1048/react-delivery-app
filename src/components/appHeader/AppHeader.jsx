@@ -74,7 +74,7 @@ const AppHeader = () => {
           <Button
             onClick={modalCart.onOpen}
             borderRadius="2px"
-            colorScheme="grey"
+            colorScheme="gray"
             variant="outline"
           >
             Корзина

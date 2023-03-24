@@ -15,7 +15,7 @@ const ModalTemplate = ({ Component, dataType, isOpen, onClose }) => {
     loginStyle: {
       width: "350px",
       height: "200px",
-      padding: "20px 0",
+      padding: "20px ",
     },
     cartStyle: {
       width: "780px",
@@ -28,7 +28,7 @@ const ModalTemplate = ({ Component, dataType, isOpen, onClose }) => {
     dataType === "modalCart" ? (
       <ModalContent w={{ base: "100%", md: styleModals.cartStyle.width }}>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody p={styleModals.cartStyle.padding}>
           <Component />
         </ModalBody>
       </ModalContent>

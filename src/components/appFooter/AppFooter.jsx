@@ -32,10 +32,14 @@ const AppFooter = () => {
             mr={"auto"}
             m={breakpointsFooterListMargin}
           >
-            <ListItem>Ресторанам </ListItem>
-            <ListItem>Курьерам</ListItem>
-            <ListItem>Пресс-центр</ListItem>
-            <ListItem>Контакты</ListItem>
+            <ListItem _hover={{ borderBottom: "1px solid" }}>
+              Ресторанам{" "}
+            </ListItem>
+            <ListItem _hover={{ borderBottom: "1px solid" }}>Курьерам</ListItem>
+            <ListItem _hover={{ borderBottom: "1px solid" }}>
+              Пресс-центр
+            </ListItem>
+            <ListItem _hover={{ borderBottom: "1px solid" }}>Контакты</ListItem>
           </UnorderedList>
           <Flex
             w={"127px"}
