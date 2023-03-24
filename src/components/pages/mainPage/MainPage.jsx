@@ -6,6 +6,7 @@ import AppBanner from "../../appBanner/AppBanner";
 import MenuItem from "../../menuItem/MenuItem";
 import AppFooter from "../../appFooter/AppFooter";
 import RestaurantItem from "../../restaurantItem/RestaurantItem";
+import { breackpointsGrid } from "../../../theme/theme";
 
 const MainPage = () => {
   return (
@@ -26,7 +27,7 @@ const MainPage = () => {
         </Flex>
         <Grid
           p="46px 0 90px 0 "
-          templateColumns="repeat(3,1fr)"
+          templateColumns={breackpointsGrid}
           gap="30px 24px"
         >
           <RestaurantItem />

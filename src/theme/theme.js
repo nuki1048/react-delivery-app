@@ -24,4 +24,25 @@ const sizes = {
     loginW: "350px",
   },
 };
-export { sizes, styles, fonts, colors };
+const breackpointsContainter = {
+  sm: "100%",
+  md: "768px",
+  lg: "960px",
+  xl: "1200px",
+  "2xl": "1200px",
+};
+const breackpointsGrid = {
+  sm: "repeat(1,1fr)",
+  md: "repeat(2,1fr)",
+  lg: "repeat(2,1fr)",
+  xl: "repeat(3,1fr)",
+  "2xl": "repeat(3,1fr)",
+};
+export {
+  sizes,
+  styles,
+  fonts,
+  colors,
+  breackpointsContainter,
+  breackpointsGrid,
+};
