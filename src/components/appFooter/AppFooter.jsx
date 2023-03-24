@@ -8,10 +8,13 @@ import vk from "../../assets/vk.svg";
 import {
   breackpointsAppFooterFlex,
   breackpointsAppFooterList,
+  breackpointsAppFooterPadding,
+  breakpointsFooterFlex,
+  breakpointsFooterListMargin,
 } from "../../theme/breakpoints";
 const AppFooter = () => {
   return (
-    <Box h="150px" p="60px 0">
+    <Box h="150px" p={breackpointsAppFooterPadding}>
       <AppContainer>
         <Flex
           w="full"
@@ -25,15 +28,20 @@ const AppFooter = () => {
             listStyleType={"none"}
             w={breackpointsAppFooterList}
             flexWrap={"wrap"}
-            justifyContent="space-between"
+            justifyContent={breakpointsFooterFlex}
             mr={"auto"}
+            m={breakpointsFooterListMargin}
           >
             <ListItem>Ресторанам </ListItem>
             <ListItem>Курьерам</ListItem>
             <ListItem>Пресс-центр</ListItem>
             <ListItem>Контакты</ListItem>
           </UnorderedList>
-          <Flex w={"127px"} justify="space-between">
+          <Flex
+            w={"127px"}
+            mt={{ base: "20px", md: "0" }}
+            justify="space-between"
+          >
             <Image src={instagram} />
             <Image src={facebook} />
             <Image src={vk} />

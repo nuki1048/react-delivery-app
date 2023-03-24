@@ -6,6 +6,10 @@ import AppBanner from "../../appBanner/AppBanner";
 
 import AppFooter from "../../appFooter/AppFooter";
 import RestaurantItem from "../../restaurantItem/RestaurantItem";
+import {
+  breackpointsMainPageInput,
+  breakpointsHeadingMainPage,
+} from "../../../theme/breakpoints";
 
 const MainPage = () => {
   return (
@@ -13,24 +17,19 @@ const MainPage = () => {
       <AppHeader />
       <Box as="section">
         <AppBanner />
-        <Flex
-          p="50px 0 "
-          flexDirection={{ base: "column", md: "row" }}
-          justify="space-between"
-          align="center"
-        >
+        <Flex p="50px 0 " justify="space-between" align="center">
           <Heading
             as="h5"
             className="font-bold text-4xl"
             fontWeight="700"
-            fontSize="36px"
+            fontSize={breakpointsHeadingMainPage}
             lineHeight="42px"
           >
             Рестораны
           </Heading>
           <Input
             placeholder="Поиск блюд и ресторанов"
-            w="306px"
+            w={breackpointsMainPageInput}
             h="40px"
             backgroundColor="#FFF"
           />
@@ -38,7 +37,7 @@ const MainPage = () => {
         <SimpleGrid
           p={{ base: "45px 0 20px 0 ", md: "46px 0 90px 0 " }}
           minChildWidth="384px"
-          gap="30px 24px"
+          gap="28px 24px"
           justifyItems="center"
         >
           <RestaurantItem />

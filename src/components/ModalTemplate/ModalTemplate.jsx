@@ -43,7 +43,7 @@ const ModalTemplate = ({ Component, dataType, isOpen, onClose }) => {
     );
   return (
     <Box>
-      <Modal size={size} isOpen={isOpen} onClose={onClose}>
+      <Modal size={{ base: size, md: size }} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
         {items}
       </Modal>

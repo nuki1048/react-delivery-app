@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import pizza from "../../assets/pizza.jpg";
 import { breakpointsItem } from "../../theme/breakpoints";

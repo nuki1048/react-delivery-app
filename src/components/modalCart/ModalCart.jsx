@@ -1,6 +1,11 @@
 import React from "react";
 import { Flex, Heading, Box, List, Button } from "@chakra-ui/react";
 import CartItem from "../cartItem/CartItem";
+import {
+  breackpointsCartFullAmountHeight,
+  breakpointsCartFullAmountFont,
+} from "../../theme/breakpoints";
+
 const ModalCart = () => {
   return (
     <Box>
@@ -13,7 +18,11 @@ const ModalCart = () => {
         justify="center"
         align="flex-start"
       >
-        <List spacing={4} w="680px" listStyleType="none">
+        <List
+          spacing={4}
+          w={{ base: "full", lg: "680px" }}
+          listStyleType="none"
+        >
           <CartItem />
           <CartItem />
           <CartItem />
@@ -24,9 +33,9 @@ const ModalCart = () => {
       <Flex mt="52px" justify="space-between" align="center">
         <Box
           w="106px"
-          h="53px"
+          h={breackpointsCartFullAmountHeight}
           borderRadius="5px"
-          p="15px 20px"
+          p={breakpointsCartFullAmountFont}
           background="#262626"
           color="#FFF"
           fontWeight="700"

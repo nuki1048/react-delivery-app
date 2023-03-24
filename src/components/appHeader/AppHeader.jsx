@@ -33,7 +33,14 @@ const AppHeader = () => {
       >
         <AppLogo />
         <InputGroup
-          w={{ base: "150px", md: "250px", lg: "400px", xl: "640px" }}
+          w={{
+            base: "120px",
+            sm: "120px",
+            md: "250px",
+            lg: "400px",
+            xl: "640px",
+          }}
+          display={{ base: "none", sm: "block" }}
         >
           <InputLeftElement
             top="-2px"
