@@ -1,12 +1,11 @@
 import React from "react";
-import { Box, Flex, Grid, Heading, Input } from "@chakra-ui/react";
+import { Box, Flex, Grid, Heading, Input, SimpleGrid } from "@chakra-ui/react";
 
 import AppHeader from "../../appHeader/AppHeader";
 import AppBanner from "../../appBanner/AppBanner";
-import MenuItem from "../../menuItem/MenuItem";
+
 import AppFooter from "../../appFooter/AppFooter";
 import RestaurantItem from "../../restaurantItem/RestaurantItem";
-import { breackpointsGrid } from "../../../theme/theme";
 
 const MainPage = () => {
   return (
@@ -14,8 +13,19 @@ const MainPage = () => {
       <AppHeader />
       <Box as="section">
         <AppBanner />
-        <Flex p="50px 0 " justify="space-between" align="center">
-          <Heading as="h5" className="font-bold text-4xl">
+        <Flex
+          p="50px 0 "
+          flexDirection={{ base: "column", md: "row" }}
+          justify="space-between"
+          align="center"
+        >
+          <Heading
+            as="h5"
+            className="font-bold text-4xl"
+            fontWeight="700"
+            fontSize="36px"
+            lineHeight="42px"
+          >
             Рестораны
           </Heading>
           <Input
@@ -25,10 +35,11 @@ const MainPage = () => {
             backgroundColor="#FFF"
           />
         </Flex>
-        <Grid
-          p="46px 0 90px 0 "
-          templateColumns={breackpointsGrid}
+        <SimpleGrid
+          p={{ base: "45px 0 20px 0 ", md: "46px 0 90px 0 " }}
+          minChildWidth="384px"
           gap="30px 24px"
+          justifyItems="center"
         >
           <RestaurantItem />
           <RestaurantItem />
@@ -36,7 +47,7 @@ const MainPage = () => {
           <RestaurantItem />
           <RestaurantItem />
           <RestaurantItem />
-        </Grid>
+        </SimpleGrid>
       </Box>
       <AppFooter />
     </>

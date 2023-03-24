@@ -27,12 +27,14 @@ const AppHeader = () => {
       <Flex
         alignItems="center"
         justify="space-between"
-        w="1200px"
+        w="100%"
         h="40px"
         mt="44px"
       >
         <AppLogo />
-        <InputGroup w="640px">
+        <InputGroup
+          w={{ base: "150px", md: "250px", lg: "400px", xl: "640px" }}
+        >
           <InputLeftElement
             top="-2px"
             fontSize="1.7em"

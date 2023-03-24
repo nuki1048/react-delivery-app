@@ -5,16 +5,26 @@ import AppContainer from "../appContainer/AppContainer";
 import facebook from "../../assets/facebook.svg";
 import instagram from "../../assets/instagram.svg";
 import vk from "../../assets/vk.svg";
+import {
+  breackpointsAppFooterFlex,
+  breackpointsAppFooterList,
+} from "../../theme/breakpoints";
 const AppFooter = () => {
   return (
     <Box h="150px" p="60px 0">
       <AppContainer>
-        <Flex w="1200px" align="center" justify={"space-between"}>
+        <Flex
+          w="full"
+          flexDirection={breackpointsAppFooterFlex}
+          align="center"
+          justify="space-between"
+        >
           <AppLogo />
           <UnorderedList
             display="flex"
             listStyleType={"none"}
-            w="420px"
+            w={breackpointsAppFooterList}
+            flexWrap={"wrap"}
             justifyContent="space-between"
             mr={"auto"}
           >

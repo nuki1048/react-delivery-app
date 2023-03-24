@@ -2,10 +2,11 @@ import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import React from "react";
 import sushi from "../../assets/sushi.png";
+import { breakpointsItem } from "../../theme/breakpoints";
 const MenuItem = () => {
   return (
     <Box
-      w="384px"
+      w={breakpointsItem}
       minHeight="414px"
       padding="234px 24px 30px 24px"
       borderRadius="7px"

@@ -2,23 +2,29 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 import AppContainer from "../appContainer/AppContainer";
 import appBanerBg from "../../assets/appBannerBg.png";
+import {
+  breackpointsBannerWidth,
+  breackpointsBannerPadding,
+} from "../../theme/breakpoints";
 const AppBanner = () => {
   return (
     <AppContainer>
       <Box
-        w="1200px"
-        h="300px"
+        w={breackpointsBannerWidth}
+        h={{ base: "220px", md: "300px" }}
         mt="40px"
         borderRadius="10px"
-        padding="67px 590px 80px 73px"
-        background={`url(${appBanerBg}) right no-repeat`}
-        backgroundColor="#FFF1B8"
+        padding={breackpointsBannerPadding}
+        background={{
+          base: "#FFF1B8",
+          md: `url(${appBanerBg}) #FFF1B8 right no-repeat`,
+        }}
       >
         <Heading
           as="h1"
           fontWeight="700"
-          fontSize="39px"
-          lineHeight="46px"
+          fontSize={{ base: "20px", sm: "25px", xl: "39px" }}
+          lineHeight={{ base: "28px", xl: "46px" }}
           textAlign="left"
         >
           Онлайн-сервис доставки еды на дом
@@ -26,7 +32,7 @@ const AppBanner = () => {
 
         <Text
           fontWeight="400"
-          fontSize="24px"
+          fontSize={{ base: "17px", sm: "24px" }}
           lineHeigh="28px"
           textAlign="left"
           mt="15px"
