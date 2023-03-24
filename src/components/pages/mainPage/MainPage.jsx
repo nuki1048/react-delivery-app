@@ -7,6 +7,7 @@ import AppBanner from "../../appBanner/AppBanner";
 import AppFooter from "../../appFooter/AppFooter";
 import RestaurantItem from "../../restaurantItem/RestaurantItem";
 import {
+  breackpointsGrid,
   breackpointsMainPageInput,
   breakpointsHeadingMainPage,
 } from "../../../theme/breakpoints";
@@ -34,9 +35,9 @@ const MainPage = () => {
             backgroundColor="#FFF"
           />
         </Flex>
-        <SimpleGrid
+        <Grid
           p={{ base: "45px 0 20px 0 ", md: "46px 0 90px 0 " }}
-          minChildWidth="384px"
+          gridTemplateColumns={breackpointsGrid}
           gap="28px 24px"
           justifyItems="center"
         >
@@ -46,7 +47,7 @@ const MainPage = () => {
           <RestaurantItem />
           <RestaurantItem />
           <RestaurantItem />
-        </SimpleGrid>
+        </Grid>
       </Box>
       <AppFooter />
     </>
