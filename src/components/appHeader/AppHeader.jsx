@@ -26,7 +26,7 @@ const AppHeader = () => {
     <AppContainer>
       <Flex
         alignItems="center"
-        justify="space-between"
+        justify={{ base: "space-around", md: "space-between" }}
         w="100%"
         h="40px"
         mt="44px"

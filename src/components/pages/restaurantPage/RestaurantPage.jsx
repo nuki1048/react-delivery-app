@@ -1,9 +1,18 @@
 import React from "react";
-import { Flex, Input, Heading, Box, Text, Grid } from "@chakra-ui/react";
+import {
+  Flex,
+  Input,
+  Heading,
+  Box,
+  Text,
+  Grid,
+  SimpleGrid,
+} from "@chakra-ui/react";
 
 import AppFooter from "../../appFooter/AppFooter";
 import AppHeader from "../../appHeader/AppHeader";
 import MenuItem from "../../menuItem/MenuItem";
+import { breackpointsGrid } from "../../../theme/breakpoints";
 
 const RestaurantPage = () => {
   return (
@@ -38,7 +47,12 @@ const RestaurantPage = () => {
           Пицца и суши
         </Text>
       </Flex>
-      <Grid p="46px 0 90px 0 " templateColumns="repeat(3,1fr)" gap="30px 24px">
+      <Grid
+        p="46px 0 90px 0 "
+        templateColumns={breackpointsGrid}
+        gap="30px 24px"
+        justifyItems="center"
+      >
         <MenuItem />
         <MenuItem />
         <MenuItem />
@@ -46,7 +60,6 @@ const RestaurantPage = () => {
         <MenuItem />
         <MenuItem />
       </Grid>
-
       <AppFooter />
     </>
   );

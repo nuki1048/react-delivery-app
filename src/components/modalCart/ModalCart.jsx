@@ -30,21 +30,25 @@ const ModalCart = () => {
           <CartItem />
         </List>
       </Flex>
-      <Flex mt="52px" justify="space-between" align="center">
-        <Box
-          w="106px"
-          h={breackpointsCartFullAmountHeight}
-          borderRadius="5px"
-          p={breakpointsCartFullAmountFont}
-          background="#262626"
-          color="#FFF"
-          fontWeight="700"
-          fontSize="20px"
-          lineHeight="23px"
+      <Box
+        w="106px"
+        h={breackpointsCartFullAmountHeight}
+        borderRadius="5px"
+        p={breakpointsCartFullAmountFont}
+        background="#262626"
+        color="#FFF"
+        fontWeight="700"
+        fontSize="20px"
+        lineHeight="23px"
+      >
+        1250 ₴
+      </Box>
+      <Flex justify="space-between" align="center">
+        <Button
+          ml={{ base: "0", md: "auto" }}
+          colorScheme="linkedin"
+          borderRadius="2px"
         >
-          1250 ₴
-        </Box>
-        <Button ml="auto" colorScheme="linkedin" borderRadius="2px">
           Оформить заказ
         </Button>
         <Button ml="18px" borderRadius="2px" variant="outline">

@@ -7,7 +7,6 @@ const MenuItem = () => {
   return (
     <Box
       w={breakpointsItem}
-      minHeight="414px"
       padding="234px 24px 30px 24px"
       borderRadius="7px"
       background={`url(${sushi}) top center no-repeat`}
