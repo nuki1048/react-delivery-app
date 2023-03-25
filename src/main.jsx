@@ -2,6 +2,8 @@ import { Box, ChakraProvider, extendTheme } from "@chakra-ui/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./components/app/App";
+import { BrowserRouter } from "react-router-dom";
+
 import { sizes, styles, fonts, colors } from "./theme/theme";
 
 import "./styles/Style.css";
@@ -9,8 +11,6 @@ import "./styles/Style.css";
 const theme = extendTheme({ colors, fonts, styles, sizes });
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ChakraProvider theme={theme}>
-    <Box>
-      <App />
-    </Box>
+    <App />
   </ChakraProvider>
 );

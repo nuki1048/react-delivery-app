@@ -1,16 +1,17 @@
-import React from "react";
-import { Box, Flex, Grid, Heading, Input, SimpleGrid } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import { Box, Flex, Grid, Heading, Input } from "@chakra-ui/react";
 
 import AppHeader from "../../appHeader/AppHeader";
 import AppBanner from "../../appBanner/AppBanner";
-
 import AppFooter from "../../appFooter/AppFooter";
-import RestaurantItem from "../../restaurantItem/RestaurantItem";
+
 import {
-  breackpointsGrid,
   breackpointsMainPageInput,
   breakpointsHeadingMainPage,
 } from "../../../theme/breakpoints";
+
+import RestaurantsList from "../../restaurantsList/RestaurantsList";
+import ErrorBoundary from "../../errorBoundary/ErrorBoundary";
 
 const MainPage = () => {
   return (
@@ -35,19 +36,9 @@ const MainPage = () => {
             backgroundColor="#FFF"
           />
         </Flex>
-        <Grid
-          p={{ base: "45px 0 20px 0 ", md: "46px 0 90px 0 " }}
-          gridTemplateColumns={breackpointsGrid}
-          gap="28px 24px"
-          justifyItems="center"
-        >
-          <RestaurantItem />
-          <RestaurantItem />
-          <RestaurantItem />
-          <RestaurantItem />
-          <RestaurantItem />
-          <RestaurantItem />
-        </Grid>
+        <ErrorBoundary>
+          <RestaurantsList />
+        </ErrorBoundary>
       </Box>
       <AppFooter />
     </>

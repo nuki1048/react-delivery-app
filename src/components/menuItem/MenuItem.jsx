@@ -3,7 +3,7 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import React from "react";
 import sushi from "../../assets/sushi.png";
 import { breakpointsItem } from "../../theme/breakpoints";
-const MenuItem = () => {
+const MenuItem = ({ name, price, description }) => {
   return (
     <Box
       w={breakpointsItem}
@@ -15,7 +15,7 @@ const MenuItem = () => {
     >
       <Flex flexDirection="column" textAlign="left">
         <Heading as="h3" fontWeight="400" fontSize="24px" lineHeight="32px">
-          Ролл угорь стандарт
+          {name}
         </Heading>
         <Text
           mt="10px"
@@ -24,7 +24,7 @@ const MenuItem = () => {
           lineHeight="21px"
           color="#8C8C8C"
         >
-          Рис, угорь, соус унаги, кунжут, водоросли нори.
+          {description}
         </Text>
       </Flex>
       <Flex
@@ -44,7 +44,7 @@ const MenuItem = () => {
           В корзину
         </Button>
         <Text fontWeight="700" fontSize="20px" lineHeight="32px">
-          250 ₴
+          {price} ₴
         </Text>
       </Flex>
     </Box>
