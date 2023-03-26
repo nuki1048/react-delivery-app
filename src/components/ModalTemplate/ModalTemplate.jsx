@@ -28,8 +28,8 @@ const ModalTemplate = ({ Component, dataType, isOpen, onClose }) => {
     dataType === "modalCart" ? (
       <ModalContent w={{ base: "100%", md: styleModals.cartStyle.width }}>
         <ModalCloseButton />
-        <ModalBody p={styleModals.cartStyle.padding}>
-          <Component />
+        <ModalBody p={styleModals.cartStyle.padding} onClose={onClose}>
+          <Component onClose={onClose} />
         </ModalBody>
       </ModalContent>
     ) : (
@@ -37,13 +37,14 @@ const ModalTemplate = ({ Component, dataType, isOpen, onClose }) => {
         <ModalHeader textAlign="left">Вход в профиль</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Component />
+          <Component onClose={onClose} />
         </ModalBody>
       </ModalContent>
     );
   return (
     <Box>
       <Modal
+        isCentered
         size={{ base: "full", md: size }}
         isOpen={isOpen}
         onClose={onClose}

@@ -7,10 +7,13 @@ import { BrowserRouter } from "react-router-dom";
 import { sizes, styles, fonts, colors } from "./theme/theme";
 
 import "./styles/Style.css";
+import ShopContext from "./context/shop-context";
 
 const theme = extendTheme({ colors, fonts, styles, sizes });
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ChakraProvider theme={theme}>
-    <App />
+    <ShopContext>
+      <App />
+    </ShopContext>
   </ChakraProvider>
 );

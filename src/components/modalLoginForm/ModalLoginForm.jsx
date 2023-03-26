@@ -6,14 +6,17 @@ import {
   FormControl,
   FormLabel,
   Input,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 const ModalLoginForm = ({ onClose }) => {
+  const toast = useToast();
+  const toastIdRef = useRef();
   const [type, setType] = useState(true);
 
   // object Formik for validation and submiting
@@ -31,10 +34,19 @@ const ModalLoginForm = ({ onClose }) => {
         .required("Обязательное поле"),
     }),
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
       formik.resetForm({ name: "", email: "" });
+      addToast(values.email);
+      onClose();
     },
   });
+
+  const addToast = (values) => {
+    toastIdRef.current = toast({
+      description: `Здравствуйте ${values}, вы успешно зашли в систему`,
+      status: "success",
+      isClosable: true,
+    });
+  };
 
   // for change type input
   const setTypePassword = () => {
@@ -95,7 +107,6 @@ const ModalLoginForm = ({ onClose }) => {
             color="#fff"
             borderRadius="2px"
             type="submit"
-            onClick={onClose}
           >
             Войти в систему
           </Button>

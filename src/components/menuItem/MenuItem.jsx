@@ -1,15 +1,34 @@
+import React, { useContext, useRef } from "react";
 import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
-import React from "react";
-import sushi from "../../assets/sushi.png";
+import { useToast } from "@chakra-ui/react";
+
 import { breakpointsItem } from "../../theme/breakpoints";
-const MenuItem = ({ name, price, description }) => {
+import { ShopContext } from "../../context/shop-context";
+const MenuItem = ({ name, price, description, image, id }) => {
+  const toast = useToast();
+  const toastIdRef = useRef();
+  const { addToCart } = useContext(ShopContext);
+  const descriptionSlice =
+    description.length > 65 ? `${description.slice(0, 65)}...` : description;
+
+  const onItemAddToCart = (id) => {
+    addToast();
+    addToCart(id);
+  };
+  const addToast = () => {
+    toastIdRef.current = toast({
+      description: `Товар успешно добавлен в корзину`,
+      status: "success",
+      isClosable: true,
+    });
+  };
   return (
     <Box
       w={breakpointsItem}
       padding="234px 24px 30px 24px"
       borderRadius="7px"
-      background={`url(${sushi}) top center no-repeat`}
+      background={`url(${image}) top center no-repeat`}
       backgroundColor="#FFF"
       boxShadow="0px 4px 12px rgba(0, 0, 0, 0.05)"
     >
@@ -24,7 +43,7 @@ const MenuItem = ({ name, price, description }) => {
           lineHeight="21px"
           color="#8C8C8C"
         >
-          {description}
+          {descriptionSlice}
         </Text>
       </Flex>
       <Flex
@@ -35,6 +54,7 @@ const MenuItem = ({ name, price, description }) => {
         align="center"
       >
         <Button
+          onClick={() => onItemAddToCart(id)}
           w="124px"
           h="40px"
           backgroundColor="brand.blue"

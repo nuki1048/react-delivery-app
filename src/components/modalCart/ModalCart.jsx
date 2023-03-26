@@ -1,12 +1,38 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Flex, Heading, Box, List, Button } from "@chakra-ui/react";
 import CartItem from "../cartItem/CartItem";
 import {
   breackpointsCartFullAmountHeight,
   breakpointsCartFullAmountFont,
 } from "../../theme/breakpoints";
+import foodService from "../../services/foodService";
+import { ShopContext } from "../../context/shop-context";
 
-const ModalCart = () => {
+const ModalCart = ({ onClose }) => {
+  const { cartItems, getTotalCartAmount } = useContext(ShopContext);
+  const { getFullCollection } = foodService();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    getData();
+  });
+
+  const getData = () => {
+    getFullCollection("PRODUCTS").then(onDataLoaded);
+  };
+  const onDataLoaded = (data) => {
+    setData(data);
+  };
+
+  const renderItems = (arr) => {
+    return arr?.map((item) => {
+      if (cartItems[item.id] > 0) {
+        return <CartItem key={item.id} />;
+      }
+    });
+  };
+
+  const items = renderItems(data);
   return (
     <Box>
       <Heading align="left" as="h3">
@@ -23,11 +49,7 @@ const ModalCart = () => {
           w={{ base: "full", lg: "680px" }}
           listStyleType="none"
         >
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
+          {items}
         </List>
       </Flex>
 
@@ -52,7 +74,12 @@ const ModalCart = () => {
         >
           Оформить заказ
         </Button>
-        <Button ml="18px" borderRadius="2px" variant="outline">
+        <Button
+          onClick={onClose}
+          ml="18px"
+          borderRadius="2px"
+          variant="outline"
+        >
           Отмена
         </Button>
       </Flex>
