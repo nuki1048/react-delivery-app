@@ -1,21 +1,25 @@
+import React, { useEffect, useState } from "react";
+
 import { Box, Grid, Heading, Spinner } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { ShopContext } from "../../context/shop-context";
+// import { ShopContext } from "../../context/shop-context";
 import foodService from "../../services/foodService";
 import { breackpointsGrid } from "../../theme/breakpoints";
 
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import MenuItem from "../menuItem/MenuItem";
-const MenuList = ({ storeName }) => {
+import AnimatedComponent from "../animatedComponent/AnimatedComponent";
+
+function MenuList({ storeName }) {
   const { loading, error, getFullCollection } = foodService();
   const [data, setData] = useState([]);
+  const onDataLoaded = (newData) => {
+    setData(newData);
+  };
 
   const getData = () => {
     getFullCollection("PRODUCTS").then(onDataLoaded);
-  };
-  const onDataLoaded = (data) => {
-    setData(data);
   };
 
   useEffect(() => {
@@ -26,24 +30,22 @@ const MenuList = ({ storeName }) => {
     const filteredArr = arr?.filter((item) => item.storeName === storeName);
     const items =
       filteredArr.length > 0 ? (
-        filteredArr.map((item) => {
-          return (
-            <MenuItem
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              price={item.price}
-              description={item.description}
-              image={item.image}
-            />
-          );
-        })
+        filteredArr.map((item) => (
+          <MenuItem
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            price={item.price}
+            description={item.description}
+            image={item.image}
+          />
+        ))
       ) : (
         <Box gridColumn="1/4">
           <Heading as="h3" mb="30px">
             Здесь пока что пусто
           </Heading>
-          <Link style={{ margin: "60px" }} to="/">
+          <Link style={{ margin: "60px", textDecoration: "underline" }} to="/">
             Вернуться на главную страничку
           </Link>
         </Box>
@@ -57,19 +59,24 @@ const MenuList = ({ storeName }) => {
   const error404 = error ? <ErrorMessage /> : null;
 
   return (
-    <Grid
-      minH="800px"
-      p="46px 0 90px 0 "
-      templateColumns={breackpointsGrid}
-      templateRows="418px"
-      gap="30px 24px"
-      justifyItems="center"
-    >
-      {items}
-      {spinnerLoading}
-      {error404}
-    </Grid>
+    <AnimatedComponent>
+      <Grid
+        minH="800px"
+        p="46px 0 90px 0 "
+        templateColumns={breackpointsGrid}
+        templateRows="418px"
+        gap="30px 24px"
+        justifyItems="center"
+      >
+        {items}
+        {spinnerLoading}
+        {error404}
+      </Grid>
+    </AnimatedComponent>
   );
+}
+MenuList.propTypes = {
+  storeName: PropTypes.string.isRequired,
 };
 
 export default MenuList;

@@ -12,7 +12,8 @@ import {
   breakpointsFooterFlex,
   breakpointsFooterListMargin,
 } from "../../theme/breakpoints";
-const AppFooter = () => {
+
+function AppFooter() {
   return (
     <Box h="150px" p={breackpointsAppFooterPadding}>
       <AppContainer>
@@ -25,11 +26,11 @@ const AppFooter = () => {
           <AppLogo />
           <UnorderedList
             display="flex"
-            listStyleType={"none"}
+            listStyleType="none"
             w={breackpointsAppFooterList}
-            flexWrap={"wrap"}
+            flexWrap="wrap"
             justifyContent={breakpointsFooterFlex}
-            mr={"auto"}
+            mr="auto"
             m={breakpointsFooterListMargin}
           >
             <ListItem _hover={{ borderBottom: "1px solid" }}>
@@ -42,7 +43,7 @@ const AppFooter = () => {
             <ListItem _hover={{ borderBottom: "1px solid" }}>Контакты</ListItem>
           </UnorderedList>
           <Flex
-            w={"127px"}
+            w="127px"
             mt={{ base: "20px", md: "0" }}
             justify="space-between"
           >
@@ -54,6 +55,6 @@ const AppFooter = () => {
       </AppContainer>
     </Box>
   );
-};
+}
 
 export default AppFooter;

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Box, Flex, Grid, Heading, Input } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Box, Flex, Heading, Input } from "@chakra-ui/react";
 
 import AppHeader from "../../appHeader/AppHeader";
 import AppBanner from "../../appBanner/AppBanner";
@@ -12,10 +12,32 @@ import {
 
 import RestaurantsList from "../../restaurantsList/RestaurantsList";
 import ErrorBoundary from "../../errorBoundary/ErrorBoundary";
+import foodService from "../../../services/foodService";
+import AnimatedComponent from "../../animatedComponent/AnimatedComponent";
 
-const MainPage = () => {
+function MainPage() {
+  const [term, setTerm] = useState("");
+  const [restauratsData, setRestauratsData] = useState([]);
+  const { getFullCollection } = foodService();
+
+  const onItemLoaded = (data) => {
+    setRestauratsData(data);
+  };
+
+  const getDataRestaurans = () => {
+    getFullCollection("RESTAURANTS").then(onItemLoaded);
+  };
+
+  useEffect(() => {
+    getDataRestaurans();
+  }, []);
+
+  const filteredData = (arr) =>
+    arr.filter((item) => item.name.toLowerCase().includes(term.toLowerCase()));
+
+  const data = filteredData(restauratsData);
   return (
-    <>
+    <AnimatedComponent>
       <AppHeader />
       <Box as="section">
         <AppBanner />
@@ -30,6 +52,8 @@ const MainPage = () => {
             Рестораны
           </Heading>
           <Input
+            onChange={(e) => setTerm(e.target.value)}
+            value={term}
             placeholder="Поиск блюд и ресторанов"
             w={breackpointsMainPageInput}
             h="40px"
@@ -37,12 +61,12 @@ const MainPage = () => {
           />
         </Flex>
         <ErrorBoundary>
-          <RestaurantsList />
+          <RestaurantsList data={data} />
         </ErrorBoundary>
       </Box>
       <AppFooter />
-    </>
+    </AnimatedComponent>
   );
-};
+}
 
 export default MainPage;

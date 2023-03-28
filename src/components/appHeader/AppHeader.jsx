@@ -1,12 +1,8 @@
 import {
   Flex,
-  Box,
-  Image,
-  Text,
   Input,
   ButtonGroup,
   Button,
-  Icon,
   InputGroup,
   InputLeftElement,
   useDisclosure,
@@ -19,7 +15,7 @@ import ModalLoginForm from "../modalLoginForm/ModalLoginForm";
 import ModalCart from "../modalCart/ModalCart";
 import AppLogo from "../appLogo/AppLogo";
 
-const AppHeader = () => {
+function AppHeader() {
   const modalLogin = useDisclosure();
   const modalCart = useDisclosure();
   return (
@@ -47,6 +43,7 @@ const AppHeader = () => {
             fontSize="1.7em"
             pointerEvents="none"
             color="gray.300"
+            // eslint-disable-next-line react/no-children-prop
             children="⌂"
           />
           <Input
@@ -69,7 +66,7 @@ const AppHeader = () => {
             isOpen={modalLogin.isOpen}
             onClose={modalLogin.onClose}
             Component={ModalLoginForm}
-            dataType={"modalLogin"}
+            dataType="modalLogin"
           />
           <Button
             onClick={modalCart.onOpen}
@@ -83,11 +80,11 @@ const AppHeader = () => {
             isOpen={modalCart.isOpen}
             onClose={modalCart.onClose}
             Component={ModalCart}
-            dataType={"modalCart"}
+            dataType="modalCart"
           />
         </ButtonGroup>
       </Flex>
     </AppContainer>
   );
-};
+}
 export default AppHeader;

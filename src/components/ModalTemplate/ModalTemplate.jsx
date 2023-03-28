@@ -1,46 +1,26 @@
+/* eslint-disable import/named */
 import {
   Box,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-
+import PropsTypes from "prop-types";
 import React from "react";
+import {
+  breackpointsCartListPadding,
+  breackpointsCartWidth,
+  breakpointsModalLoginPadding,
+} from "../../theme/breakpoints";
 
-const ModalTemplate = ({ Component, dataType, isOpen, onClose }) => {
-  const styleModals = {
-    loginStyle: {
-      width: "350px",
-      height: "200px",
-      padding: "20px ",
-    },
-    cartStyle: {
-      width: "780px",
-      height: "552px",
-      padding: "8px 45px 42px 45px ",
-    },
-  };
+function ModalTemplate({ Component, dataType, isOpen, onClose }) {
   const size = dataType === "modalCart" ? "cartW" : "loginW";
   const items =
-    dataType === "modalCart" ? (
-      <ModalContent w={{ base: "100%", md: styleModals.cartStyle.width }}>
-        <ModalCloseButton />
-        <ModalBody p={styleModals.cartStyle.padding} onClose={onClose}>
-          <Component onClose={onClose} />
-        </ModalBody>
-      </ModalContent>
-    ) : (
-      <ModalContent w={"loginW"} p={styleModals.loginStyle.padding}>
-        <ModalHeader textAlign="left">Вход в профиль</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Component onClose={onClose} />
-        </ModalBody>
-      </ModalContent>
-    );
+    dataType === "modalCart"
+      ? { w: breackpointsCartWidth, p: breackpointsCartListPadding }
+      : { w: "loginW", p: breakpointsModalLoginPadding };
   return (
     <Box>
       <Modal
@@ -50,10 +30,21 @@ const ModalTemplate = ({ Component, dataType, isOpen, onClose }) => {
         onClose={onClose}
       >
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
-        {items}
+        <ModalContent w={items.w}>
+          <ModalCloseButton />
+          <ModalBody p={items.p}>
+            <Component onClose={onClose} />
+          </ModalBody>
+        </ModalContent>
       </Modal>
     </Box>
   );
-};
+}
 
+ModalTemplate.propTypes = {
+  Component: PropsTypes.func.isRequired,
+  dataType: PropsTypes.string.isRequired,
+  isOpen: PropsTypes.bool.isRequired,
+  onClose: PropsTypes.func.isRequired,
+};
 export default ModalTemplate;

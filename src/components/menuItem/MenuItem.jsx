@@ -1,21 +1,19 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React, { useContext, useRef } from "react";
 import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/react";
-
+import PropTypes from "prop-types";
 import { breakpointsItem } from "../../theme/breakpoints";
 import { ShopContext } from "../../context/shop-context";
-const MenuItem = ({ name, price, description, image, id }) => {
+// import { ShopContext } from "../../context/shop-context";
+
+function MenuItem({ name, price, description, image, id }) {
   const toast = useToast();
   const toastIdRef = useRef();
   const { addToCart } = useContext(ShopContext);
   const descriptionSlice =
     description.length > 65 ? `${description.slice(0, 65)}...` : description;
-
-  const onItemAddToCart = (id) => {
-    addToast();
-    addToCart(id);
-  };
   const addToast = () => {
     toastIdRef.current = toast({
       description: `Товар успешно добавлен в корзину`,
@@ -23,6 +21,11 @@ const MenuItem = ({ name, price, description, image, id }) => {
       isClosable: true,
     });
   };
+  const onItemAddToCart = (IdentityDocument) => {
+    addToast();
+    addToCart(IdentityDocument);
+  };
+
   return (
     <Box
       w={breakpointsItem}
@@ -31,6 +34,8 @@ const MenuItem = ({ name, price, description, image, id }) => {
       background={`url(${image}) top center no-repeat`}
       backgroundColor="#FFF"
       boxShadow="0px 4px 12px rgba(0, 0, 0, 0.05)"
+      transition="0.5s all"
+      _hover={{ boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)" }}
     >
       <Flex flexDirection="column" textAlign="left">
         <Heading as="h3" fontWeight="400" fontSize="24px" lineHeight="32px">
@@ -69,6 +74,14 @@ const MenuItem = ({ name, price, description, image, id }) => {
       </Flex>
     </Box>
   );
+}
+
+MenuItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default MenuItem;

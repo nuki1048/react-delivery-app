@@ -36,14 +36,20 @@ const breakpointsCartItemNameFont = { base: "16px", md: "18px" };
 const breakpointsCartPriceFont = { base: "17px", md: "20px" };
 const breakpointsCartFullAmountFont = { base: "10px 20px", md: "15px 20px" };
 const breackpointsCartFullAmountHeight = { base: "40px", md: "53px" };
+const breackpointsCartWidth = { base: "100%", md: "780px" };
 
 const breackpointsAppFooterFlex = { base: "column", md: "row" };
 const breakpointsFooterListMargin = { base: "0", md: "0 auto 0 1em" };
 const breakpointsFooterFlex = { base: "space-evenly", md: "space-between" };
 const breackpointsAppFooterPadding = { base: "20px 0", md: "60px 0" };
 const breackpointsAppFooterList = { base: "full", md: "420px" };
+const breakpointsModalLoginPadding = { padding: "40px" };
+const breackpointsCartListPadding = "8px 45px 42px 45px ";
 
 export {
+  breakpointsModalLoginPadding,
+  breackpointsCartWidth,
+  breackpointsCartListPadding,
   breackpointsContainter,
   breackpointsGrid,
   breackpointsBannerWidth,

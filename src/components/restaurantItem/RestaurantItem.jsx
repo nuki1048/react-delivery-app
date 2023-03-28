@@ -1,9 +1,10 @@
-import { Box, Flex, Skeleton, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import React from "react";
+import PropsTypes from "prop-types";
 import pizza from "../../assets/pizza.jpg";
 import { breakpointsItem } from "../../theme/breakpoints";
 
-const RestaurantItem = ({ storeName, name, rating, price, category }) => {
+function RestaurantItem({ name, rating, price, category }) {
   return (
     <Box
       w={breakpointsItem}
@@ -13,6 +14,8 @@ const RestaurantItem = ({ storeName, name, rating, price, category }) => {
       background={`url(${pizza}) top center no-repeat`}
       backgroundColor="#FFF"
       p="268px 24px 35px 24px"
+      transition="0.5s all"
+      _hover={{ boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)" }}
     >
       <Flex justify="space-between" align="center">
         <Text fontWeight="700" fontSize="24px" lineHeight="32px">
@@ -35,7 +38,19 @@ const RestaurantItem = ({ storeName, name, rating, price, category }) => {
         </Box>
       </Flex>
       <Flex w="205px" m="0 auto 0 20px" justify="space-between" align="center">
-        <Box fontWeight="700" fontSize="18px" lineHeight="32px" color="#FFC107">
+        <Box
+          fontWeight="700"
+          position="relative"
+          _before={{
+            content: '"★"',
+            position: "absolute",
+            right: "70%",
+            transform: "translateX(-70%)",
+          }}
+          fontSize="18px"
+          lineHeight="32px"
+          color="#FFC107"
+        >
           {rating}
         </Box>
         <Box
@@ -57,6 +72,13 @@ const RestaurantItem = ({ storeName, name, rating, price, category }) => {
       </Flex>
     </Box>
   );
+}
+
+RestaurantItem.propTypes = {
+  name: PropsTypes.string.isRequired,
+  rating: PropsTypes.number.isRequired,
+  price: PropsTypes.number.isRequired,
+  category: PropsTypes.string.isRequired,
 };
 
 export default RestaurantItem;

@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 import AppContainer from "../appContainer/AppContainer";
 import appBanerBg from "../../assets/appBannerBg.png";
@@ -6,7 +6,8 @@ import {
   breackpointsBannerWidth,
   breackpointsBannerPadding,
 } from "../../theme/breakpoints";
-const AppBanner = () => {
+
+function AppBanner() {
   return (
     <AppContainer>
       <Box
@@ -33,7 +34,7 @@ const AppBanner = () => {
         <Text
           fontWeight="400"
           fontSize={{ base: "17px", sm: "24px" }}
-          lineHeigh="28px"
+          lineHeight="28px"
           textAlign="left"
           mt="15px"
         >
@@ -43,6 +44,6 @@ const AppBanner = () => {
       </Box>
     </AppContainer>
   );
-};
+}
 
 export default AppBanner;

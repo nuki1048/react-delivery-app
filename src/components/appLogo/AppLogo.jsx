@@ -1,11 +1,17 @@
 import React from "react";
 import { Box, Image, Heading } from "@chakra-ui/react";
-import logo from "../../assets/logo.svg";
 import { Link } from "react-router-dom";
-const AppLogo = () => {
+import logo from "../../assets/logo.svg";
+
+function AppLogo() {
   return (
     <Link to="/">
-      <Box display="flex" w="100px">
+      <Box
+        display="flex"
+        w="100px"
+        transition="0.8s all"
+        _hover={{ transform: "scale(1.02)" }}
+      >
         <Image src={logo} alt="Delivery Food Logo" />
         <Heading as="h2" fontWeight="400" fontSize="15px" lineHeight="18px">
           Delivery Food
@@ -13,6 +19,6 @@ const AppLogo = () => {
       </Box>
     </Link>
   );
-};
+}
 
 export default AppLogo;

@@ -1,68 +1,86 @@
-import React, { createContext, useEffect, useState } from "react";
+/* eslint-disable no-case-declarations */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-expressions */
+import React, { createContext, useEffect, useReducer, useState } from "react";
+
 import foodService from "../services/foodService";
+
 export const ShopContext = createContext(null);
-const ShopContextProvider = (props) => {
+// eslint-disable-next-line react/prop-types
+
+const cartReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_TO_CART":
+      const id = action.payload;
+      return {
+        ...state,
+        [id]: (state[id] || 0) + 1,
+      };
+    case "REMOVE_FROM_CART":
+      const itemId = action.payload;
+      const newCart = { ...state };
+      // eslint-disable-next-line no-plusplus
+      newCart[itemId] > 1 ? newCart[itemId]-- : delete newCart[itemId];
+
+      return newCart;
+    default:
+      return state;
+  }
+};
+
+function ShopContextProvider({ children }) {
+  const [cart, dispatch] = useReducer(cartReducer, {});
+
+  const addToCart = (itemId) => {
+    dispatch({ type: "ADD_TO_CART", payload: itemId });
+  };
+
+  const removeFromCart = (itemId) => {
+    dispatch({ type: "REMOVE_FROM_CART", payload: itemId });
+  };
+  const updateCartNum = (itemId, newAmount) => {
+    dispatch({ type: "UPDATE_CART_NUM", payload: { itemId, newAmount } });
+  };
+
   const [data, setData] = useState([]);
   const { getFullCollection } = foodService();
 
-  useEffect(() => {
-    getData();
-    //  getDefaultCart(data);
-  }, []);
+  const onDataLoaded = (newData) => {
+    setData(newData);
+  };
 
   const getData = () => {
     getFullCollection("PRODUCTS").then(onDataLoaded);
   };
 
-  const onDataLoaded = (data) => {
-    setData(data);
-  };
+  useEffect(() => {
+    getData();
+  }, []);
 
-  const getDefaultCart = () => {
-    const cart = {};
-    for (const item of data) {
-      cart[item.id] = 0;
-    }
-
-    return cart;
-  };
-
-  const [cartItems, setCartItems] = useState();
-
-  const addToCart = (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-    console.log(cartItems);
-  };
-  const removeToCart = (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-  };
-  const addToCartNum = (itemId, newAmount) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: newAmount }));
-  };
   const getTotalCartAmount = () => {
     let totalAmount = 0;
-    for (const item in cartItems) {
-      if (cartItems[item] > 0) {
-        let itemInfo = data.find((product) => product.id === Number(item));
-        totalAmount += cartItems[item] * itemInfo.price;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const item in cart) {
+      if (cart[item] > 0) {
+        const itemInfo = data.find((product) => product.id === item);
+        totalAmount += cart[item] * itemInfo.price;
       }
     }
     return totalAmount;
   };
 
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
   const contextValue = {
-    cartItems,
-    getDefaultCart,
+    cart,
+    updateCartNum,
     addToCart,
-    removeToCart,
-    addToCartNum,
+    removeFromCart,
     getTotalCartAmount,
+    data,
   };
   return (
-    <ShopContext.Provider value={contextValue}>
-      {props.children}
-    </ShopContext.Provider>
+    <ShopContext.Provider value={contextValue}>{children}</ShopContext.Provider>
   );
-};
+}
 
 export default ShopContextProvider;
