@@ -1,17 +1,13 @@
 import React from "react";
-import { Grid, Spinner } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 
 import { Link } from "react-router-dom";
 import PropsTypes from "prop-types";
 import AnimatedComponent from "../animatedComponent/AnimatedComponent";
 import RestaurantItem from "../restaurantItem/RestaurantItem";
 import { breackpointsGrid } from "../../theme/breakpoints";
-import foodService from "../../services/foodService";
-import ErrorMessage from "../errorMessage/ErrorMessage";
 
 function RestaurantsList({ data }) {
-  const { loading, error } = foodService();
-
   const renderItems = (arr) =>
     arr.map((item) => (
       <Link key={item.id} to={`/restaurats/${item.id}`}>
@@ -19,20 +15,14 @@ function RestaurantsList({ data }) {
           key={item.id}
           storeName={item.id}
           name={item.name}
-          price={item.startingPrice}
+          price={+item.startingPrice}
           category={item.category}
           rating={item.rating}
         />
       </Link>
     ));
 
-  const loadingSpinner = loading ? (
-    <Spinner gridColumn="1/4" w="200px" h="200px" />
-  ) : null;
-
-  const Error404Message = error ? <ErrorMessage /> : null;
-
-  const items = !(error || loading || !data) ? renderItems(data) : null;
+  const items = renderItems(data);
 
   return (
     <AnimatedComponent>
@@ -44,8 +34,6 @@ function RestaurantsList({ data }) {
         justifyItems="center"
         alignItems="center"
       >
-        {loadingSpinner}
-        {Error404Message}
         {items}
       </Grid>
     </AnimatedComponent>
@@ -53,7 +41,7 @@ function RestaurantsList({ data }) {
 }
 
 RestaurantsList.propTypes = {
-  data: PropsTypes.objectOf.isRequired,
+  data: PropsTypes.array.isRequired,
 };
 
 export default RestaurantsList;

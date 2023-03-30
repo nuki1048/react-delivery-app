@@ -3,6 +3,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Flex, Heading, Box, List, Button, Spinner } from "@chakra-ui/react";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import CartItem from "../cartItem/CartItem";
 import {
   breackpointsCartFullAmountHeight,
@@ -16,10 +17,11 @@ import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 
 function ModalCart({ onClose }) {
   const { cart, getTotalCartAmount } = useContext(ShopContext);
-
   const totalAmount = getTotalCartAmount();
+
   const { loading, error, getFullCollection } = foodService();
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
 
   const onDataLoaded = (newData) => {
     setData(newData);
@@ -49,6 +51,10 @@ function ModalCart({ onClose }) {
     });
   };
 
+  const navigateToCheckout = () => {
+    onClose();
+    navigate("/checkout");
+  };
   const items = !(loading || error || !data) ? renderItems(data) : null;
   const errorMessage = error ? <ErrorMessage /> : null;
   const loadingSpinner = loading ? (
@@ -91,6 +97,8 @@ function ModalCart({ onClose }) {
           ml={{ base: "0", md: "auto" }}
           colorScheme="linkedin"
           borderRadius="2px"
+          isDisabled={totalAmount === 0}
+          onClick={() => navigateToCheckout()}
         >
           Оформить заказ
         </Button>

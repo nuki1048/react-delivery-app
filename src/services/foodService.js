@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useState } from "react";
 
 import { db } from "../config/firebase";
@@ -40,7 +40,16 @@ const foodService = () => {
       );
     }
   };
+  const addNewDoc = async (collectionName, object) => {
+    try {
+      await addDoc(collection(db, collectionName), { ...object });
 
-  return { loading, error, getFullCollection, getOneDoc };
+      // eslint-disable-next-line no-shadow
+    } catch (error) {
+      throw new Error(`we can't add this doc on ${collectionName}`);
+    }
+  };
+
+  return { loading, error, getFullCollection, getOneDoc, addNewDoc };
 };
 export default foodService;

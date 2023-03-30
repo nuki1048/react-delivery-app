@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@chakra-ui/button": "^2.0.17",
+    "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.5.2",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "card-validator": "^8.1.1",
     "firebase": "^9.18.0",
     "formik": "^2.2.9",
     "framer-motion": "^10.8.4",

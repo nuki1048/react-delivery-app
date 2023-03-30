@@ -3,6 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import React, { lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import ErrorPage from "../pages/404/ErrorPage";
+import CheckoutPage from "../pages/checkoutPage/CheckoutPage";
 
 // import MainPage from "../pages/mainPage/MainPage";
 
@@ -26,6 +27,7 @@ function App() {
         <Routes key={location.pathname} location={location}>
           <Route index element={<MainPage />} />
           <Route path="/restaurats/:storeName" element={<RestaurantPage />} />
+          <Route path="checkout" element={<CheckoutPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </AnimatePresence>

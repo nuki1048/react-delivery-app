@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Heading, Input } from "@chakra-ui/react";
+import { Box, Flex, Heading, Input, Spinner } from "@chakra-ui/react";
 
 import AppHeader from "../../appHeader/AppHeader";
 import AppBanner from "../../appBanner/AppBanner";
 import AppFooter from "../../appFooter/AppFooter";
-
+import ErrorMessage from "../../errorMessage/ErrorMessage";
 import {
   breackpointsMainPageInput,
   breakpointsHeadingMainPage,
@@ -18,7 +18,7 @@ import AnimatedComponent from "../../animatedComponent/AnimatedComponent";
 function MainPage() {
   const [term, setTerm] = useState("");
   const [restauratsData, setRestauratsData] = useState([]);
-  const { getFullCollection } = foodService();
+  const { loading, error, getFullCollection } = foodService();
 
   const onItemLoaded = (data) => {
     setRestauratsData(data);
@@ -36,6 +36,17 @@ function MainPage() {
     arr.filter((item) => item.name.toLowerCase().includes(term.toLowerCase()));
 
   const data = filteredData(restauratsData);
+
+  const loadingSpinner = loading ? (
+    <Spinner ml="500px" gridColumn="1/4" w="200px" h="200px" />
+  ) : null;
+
+  const Error404Message = error ? <ErrorMessage /> : null;
+
+  const items = !(error || loading || !restauratsData) ? (
+    <RestaurantsList data={data} />
+  ) : null;
+
   return (
     <AnimatedComponent>
       <AppHeader />
@@ -61,7 +72,9 @@ function MainPage() {
           />
         </Flex>
         <ErrorBoundary>
-          <RestaurantsList data={data} />
+          {loadingSpinner}
+          {items}
+          {Error404Message}
         </ErrorBoundary>
       </Box>
       <AppFooter />

@@ -23,6 +23,8 @@ const cartReducer = (state, action) => {
       newCart[itemId] > 1 ? newCart[itemId]-- : delete newCart[itemId];
 
       return newCart;
+    case "CLEAR_CART":
+      return {};
     default:
       return state;
   }
@@ -40,6 +42,9 @@ function ShopContextProvider({ children }) {
   };
   const updateCartNum = (itemId, newAmount) => {
     dispatch({ type: "UPDATE_CART_NUM", payload: { itemId, newAmount } });
+  };
+  const clearCart = () => {
+    dispatch({ type: "CLEAR_CART" });
   };
 
   const [data, setData] = useState([]);
@@ -77,6 +82,7 @@ function ShopContextProvider({ children }) {
     removeFromCart,
     getTotalCartAmount,
     data,
+    clearCart,
   };
   return (
     <ShopContext.Provider value={contextValue}>{children}</ShopContext.Provider>
