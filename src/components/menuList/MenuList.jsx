@@ -42,7 +42,7 @@ function MenuList({ storeName }) {
         ))
       ) : (
         <Box gridColumn="1/4">
-          <Heading as="h3" mb="30px">
+          <Heading as="h3" m="60px 0 30px 0 " mb="30px">
             Здесь пока что пусто
           </Heading>
           <Link style={{ margin: "60px", textDecoration: "underline" }} to="/">

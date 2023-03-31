@@ -2,22 +2,18 @@ import { Spinner } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
 import React, { lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import ErrorPage from "../pages/404/ErrorPage";
-import CheckoutPage from "../pages/checkoutPage/CheckoutPage";
-
-// import MainPage from "../pages/mainPage/MainPage";
-
-// import RestaurantPage from "../pages/restaurantPage/RestaurantPage";
 
 const MainPage = lazy(() => import("../pages/mainPage/MainPage"));
 const RestaurantPage = lazy(() =>
   import("../pages/restaurantPage/RestaurantPage")
 );
+const OrderThanksPage = lazy(() =>
+  import("../pages/orderThanksPage/OrderThanksPage")
+);
+const CheckoutPage = lazy(() => import("../pages/checkoutPage/CheckoutPage"));
+const ErrorPage = lazy(() => import("../pages/404/ErrorPage"));
 
 function App() {
-  // const router = createBrowserRouter(
-  //   createRoutesFromElements(<Route path="/" />)
-  // );
   const location = useLocation();
   return (
     <Suspense
@@ -29,6 +25,7 @@ function App() {
           <Route path="/restaurats/:storeName" element={<RestaurantPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="*" element={<ErrorPage />} />
+          <Route path="/orderThanks" element={<OrderThanksPage />} />
         </Routes>
       </AnimatePresence>
     </Suspense>

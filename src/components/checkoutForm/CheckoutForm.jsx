@@ -110,7 +110,7 @@ function CheckoutForm({ amountWithTaxes }) {
           region: values.region,
           cart: { ...cartPos },
         });
-        navigate("/");
+        navigate("/orderThanks");
         clearCart();
       }
     },

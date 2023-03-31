@@ -41,6 +41,7 @@ function RestaurantsList({ data }) {
 }
 
 RestaurantsList.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   data: PropsTypes.array.isRequired,
 };
 

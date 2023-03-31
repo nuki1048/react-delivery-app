@@ -23,7 +23,7 @@ function AppHeader() {
       <Flex
         alignItems="center"
         justify={{ base: "space-around", md: "space-between" }}
-        w="100%"
+        w="1200px"
         h="40px"
         mt="44px"
       >
