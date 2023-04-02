@@ -22,12 +22,12 @@ function OrderThanksPage() {
       <AppHeader />
       <AppContainer>
         <Flex
-          p="200px 0 330px 0"
+          p={{ base: "100px 0 330px 0", md: "200px 0 330px 0" }}
           flexDirection="column"
           align="center"
           justify="space-between"
         >
-          <Heading fontSize="42px" as="h2">
+          <Heading fontSize={{ base: "33px", md: "42px" }} as="h2">
             Спасибо за заказ!
           </Heading>{" "}
           <Text mt="30px" fontSize="24px" lineHeight="16px">
@@ -35,7 +35,11 @@ function OrderThanksPage() {
             Мы с вами свяжемся =)
           </Text>
           <CheckIcon mt="30px" color="green" w={40} h={40} />
-          <Text borderBottom="1px solid" mt="50px" fontSize="32px">
+          <Text
+            borderBottom="1px solid"
+            mt="50px"
+            fontSize={{ base: "20px", md: "32px" }}
+          >
             Вы перейдете на главную страницу через {time}
           </Text>
         </Flex>

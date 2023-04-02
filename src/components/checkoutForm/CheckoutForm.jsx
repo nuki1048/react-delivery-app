@@ -1,5 +1,6 @@
+/* eslint-disable react/no-children-prop */
 /* eslint-disable import/no-extraneous-dependencies */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 
 import {
@@ -12,6 +13,7 @@ import {
   Image,
   Input,
   InputGroup,
+  InputRightElement,
   Select,
   VStack,
 } from "@chakra-ui/react";
@@ -26,9 +28,14 @@ import applePay from "../../assets/applePay.svg";
 import foodService from "../../services/foodService";
 import { ShopContext } from "../../context/shop-context";
 
+import VisaIcon from "../icons/VisaIcon";
+import MasterCardIcon from "../icons/MasterCardIcon";
+import AmericanExpressIcon from "../icons/AmericanExpressIcon";
+
 function CheckoutForm({ amountWithTaxes }) {
   const navigate = useNavigate();
   const { addNewDoc } = foodService();
+  const [type, setType] = useState("");
   const { clearCart, cart, data } = useContext(ShopContext);
 
   const createCartObj = () => {
@@ -60,7 +67,10 @@ function CheckoutForm({ amountWithTaxes }) {
         .test(
           "test-number", // this is used internally by yup
           "Номер карты не действителен", // validation message
-          (value) => valid.number(value).isValid
+          (value) => {
+            setType(valid.number(value).card?.type);
+            return valid.number(value).isValid;
+          }
         )
         .required("Обязательное поле"),
       CVC: Yup.string()
@@ -115,9 +125,23 @@ function CheckoutForm({ amountWithTaxes }) {
       }
     },
   });
+  const typeCardBrand = (cardType) => {
+    switch (cardType) {
+      case "mastercard":
+        return <InputRightElement children={<MasterCardIcon />} />;
+      case "visa":
+        return <InputRightElement children={<VisaIcon />} />;
+      case "american-express":
+        return <InputRightElement children={<AmericanExpressIcon />} />;
+      default:
+        return null;
+    }
+  };
+
+  const iconCard = typeCardBrand(type);
 
   return (
-    <GridItem w="421px" h="full" justifySelf="center">
+    <GridItem w={{ base: "full", md: "421px" }} h="full" justifySelf="center">
       <Button
         backgroundColor="#000"
         boxShadow=" 0px -1px 1px rgba(0, 0, 0, 0.12), 0px 2px 5px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.08)"
@@ -136,7 +160,7 @@ function CheckoutForm({ amountWithTaxes }) {
           left: "-5px",
 
           top: "50%",
-          width: "125px",
+          width: { base: "55px", md: "125px" },
           height: "1px",
           backgroundColor: "rgba(60, 66, 87,.12)",
         }}
@@ -146,7 +170,7 @@ function CheckoutForm({ amountWithTaxes }) {
           right: "-5px",
 
           top: "50%",
-          width: "125px",
+          width: { base: "55px", md: "125px" },
           height: "1px",
           backgroundColor: "rgba(60, 66, 87,.12)",
         }}
@@ -161,7 +185,7 @@ function CheckoutForm({ amountWithTaxes }) {
 
       <Flex mt="32px">
         <form onSubmit={formik.handleSubmit}>
-          <VStack spacing="32px">
+          <VStack w={{ base: "full" }} spacing="32px">
             <FormControl>
               <FormLabel color="#697386">Электронная почта</FormLabel>
               <Input
@@ -170,7 +194,7 @@ function CheckoutForm({ amountWithTaxes }) {
                 onBlur={formik.handleBlur}
                 name="email"
                 type="email"
-                w="421px"
+                w={{ base: "full", md: "421px" }}
               />
               {formik.touched.email && formik.errors.email ? (
                 <Box color="#E53E3E" mt="15px">
@@ -180,21 +204,24 @@ function CheckoutForm({ amountWithTaxes }) {
             </FormControl>
             <FormControl>
               <FormLabel color="#697386">Кредитная карточка</FormLabel>
-              <Input
-                id="credit-card"
-                name="creditCard"
-                type="number"
-                onChange={formik.handleChange}
-                value={formik.values.creditCard}
-                onBlur={formik.handleBlur}
-                placeholder="1234 1234 1234 1234"
-                borderRadius="8px 8px 0px 0px"
-              />
-              {formik.touched.creditCard && formik.errors.creditCard ? (
-                <Box color="#E53E3E" mt="15px">
-                  {formik.errors.creditCard}
-                </Box>
-              ) : null}
+              <InputGroup>
+                <Input
+                  id="credit-card"
+                  name="creditCard"
+                  type="number"
+                  onChange={formik.handleChange}
+                  value={formik.values.creditCard}
+                  onBlur={formik.handleBlur}
+                  placeholder="1234 1234 1234 1234"
+                  borderRadius="8px 8px 0px 0px"
+                />
+                {formik.touched.creditCard && formik.errors.creditCard ? (
+                  <Box color="#E53E3E" mt="15px">
+                    {formik.errors.creditCard}
+                  </Box>
+                ) : null}
+                {iconCard}
+              </InputGroup>
               <InputGroup>
                 <Input
                   name="YYMM"
@@ -238,7 +265,7 @@ function CheckoutForm({ amountWithTaxes }) {
                 value={formik.values.nameOnCard}
                 onBlur={formik.handleBlur}
                 type="text"
-                w="421px"
+                w={{ base: "full", md: "421px" }}
               />
               {formik.touched.nameOnCard && formik.errors.nameOnCard ? (
                 <Box color="#E53E3E" mt="15px">
@@ -303,7 +330,7 @@ function CheckoutForm({ amountWithTaxes }) {
                 value={formik.values.index}
                 onBlur={formik.handleBlur}
                 name="index"
-                w="421px"
+                w={{ base: "full", md: "421px" }}
                 borderRadius=" 0px 0px 8px 8px"
                 color="#697386"
                 placeholder="Индекс"

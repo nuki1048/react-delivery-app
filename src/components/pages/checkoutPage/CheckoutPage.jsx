@@ -47,8 +47,19 @@ function CheckoutPage() {
   const items = renderItems(data);
   return (
     <AnimatedComponent>
-      <Box minH="670px" p="103px 177px 127px 150px">
-        <Grid gap="190px" templateColumns="1fr 2fr">
+      <Box
+        minH="670px"
+        p={{
+          base: "20px",
+          sm: "50px",
+          lg: "100px 50px ",
+          xl: "103px 177px 127px 150px",
+        }}
+      >
+        <Grid
+          gap={{ base: "40px", lg: "100px", xl: "190px" }}
+          templateColumns={{ md: "1fr", lg: "1fr 2fr" }}
+        >
           <GridItem gridColumn="1/2">
             <Link to="/">
               <Flex
@@ -64,7 +75,12 @@ function CheckoutPage() {
               </Flex>
             </Link>
 
-            <Flex mt="40px" w="150px" flexDirection="column">
+            <Flex
+              display={{ base: "none", md: "block" }}
+              mt="40px"
+              w="150px"
+              flexDirection="column"
+            >
               <Text color="#697386" fontSize="14px">
                 Pay Delivery Food
               </Text>
@@ -73,20 +89,25 @@ function CheckoutPage() {
               </Text>
             </Flex>
 
-            <Box w="490px">
+            <Box w={{ base: "full", md: "350px" }}>
               <UnorderedList
                 maxH="200px"
                 w="full"
                 overflow="scroll"
                 style={{ scrollbarWidth: "none" }}
                 mt="30px"
+                ml="0"
                 spacing="23px"
               >
                 {items}
               </UnorderedList>
-              <UnorderedList w="257px" m="23px 0 0 auto " listStyleType="none">
+              <UnorderedList
+                w="257px"
+                m={{ base: "30px auto 0 auto", md: "23px 0 0 auto " }}
+                listStyleType="none"
+              >
                 <ListItem
-                  h=" 44px"
+                  h="44px"
                   p="12px 0"
                   borderBottom="1px solid rgba(60, 66, 87, 0.12)"
                 >
@@ -113,7 +134,11 @@ function CheckoutPage() {
                 </ListItem>
               </UnorderedList>
             </Box>
-            <Box mt="120px" display="flex" alignContent="center">
+            <Box
+              mt="120px"
+              display={{ base: "none", md: "none", xl: "flex" }}
+              alignContent="center"
+            >
               <Flex align="center" w="263px" justify="space-between">
                 <Text fontSize="12px">Powered by</Text>
                 <Image borderRadius="100%" width="32px" src={logo} />

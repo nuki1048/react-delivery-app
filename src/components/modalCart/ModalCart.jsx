@@ -60,6 +60,12 @@ function ModalCart({ onClose }) {
   const loadingSpinner = loading ? (
     <Spinner w="100px" h="100px" ml="30%" />
   ) : null;
+  const cartEmpty = totalAmount ? null : (
+    <Heading as="h2" textAlign="center" m="50px 0" fontSize="24px">
+      Ваша коризна пуста!
+    </Heading>
+  );
+
   return (
     <Box>
       <Heading align="left" as="h3">
@@ -75,6 +81,7 @@ function ModalCart({ onClose }) {
             {items}
             {errorMessage}
             {loadingSpinner}
+            {cartEmpty}
           </List>
         </ErrorBoundary>
       </Flex>
@@ -88,7 +95,7 @@ function ModalCart({ onClose }) {
           background="#262626"
           color="#FFF"
           fontWeight="700"
-          fontSize="20px"
+          fontSize={{ base: "15px", md: "20px" }}
           lineHeight="23px"
         >
           {totalAmount} ₴
@@ -99,12 +106,14 @@ function ModalCart({ onClose }) {
           borderRadius="2px"
           isDisabled={totalAmount === 0}
           onClick={() => navigateToCheckout()}
+          fontSize={{ base: "10px", md: "16px" }}
+          lineHeight="24px"
         >
           Оформить заказ
         </Button>
         <Button
           onClick={onClose}
-          ml="18px"
+          ml={{ base: 0, md: "18px" }}
           borderRadius="2px"
           variant="outline"
         >

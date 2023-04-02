@@ -13,7 +13,7 @@ function MenuItem({ name, price, description, image, id }) {
   const toastIdRef = useRef();
   const { addToCart } = useContext(ShopContext);
   const descriptionSlice =
-    description.length > 65 ? `${description.slice(0, 65)}...` : description;
+    description.length > 50 ? `${description.slice(0, 50)}...` : description;
   const addToast = () => {
     toastIdRef.current = toast({
       description: `Товар успешно добавлен в корзину`,
@@ -28,6 +28,7 @@ function MenuItem({ name, price, description, image, id }) {
 
   return (
     <Box
+      minH="415px"
       w={breakpointsItem}
       padding="234px 24px 30px 24px"
       borderRadius="7px"

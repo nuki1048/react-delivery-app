@@ -1,11 +1,12 @@
 import React from "react";
 import { Box, Flex, Image, ListItem, Text } from "@chakra-ui/react";
 import PropTypes from "prop-types";
+import { breakpointsCheckoutItem } from "../../theme/breakpoints";
 
 function CheckoutItem({ name, price, amount, image }) {
   return (
     <ListItem
-      w="480px"
+      w={breakpointsCheckoutItem}
       display="flex"
       alignItems="center"
       justifyContent="space-between"

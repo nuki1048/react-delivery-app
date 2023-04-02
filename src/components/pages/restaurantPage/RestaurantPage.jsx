@@ -32,11 +32,18 @@ function RestaurantPage() {
   return (
     <AnimatedComponent>
       <AppHeader />
-      <Flex mt="43px" w="443px" h="42px" align="center" justify="space-between">
+      <Flex
+        mt="43px"
+        w={{ base: "full", md: "443px" }}
+        h="42px"
+        align="center"
+        justify={{ base: "space-evenly", md: "space-between" }}
+      >
         <Text as="h5" fontWeight="700" fontSize="36px" lineHeight="42px">
           {restaurantsInfo?.name}
         </Text>
         <Text
+          display={{ base: "none", md: "block" }}
           fontWeight="700"
           fontSize="18px"
           lineHeight="32px"
@@ -52,6 +59,7 @@ function RestaurantPage() {
           {restaurantsInfo?.rating}
         </Text>
         <Text
+          display={{ base: "none", md: "block" }}
           fontWeight="400"
           fontSize="18px"
           lineHeight="32px"

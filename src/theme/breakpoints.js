@@ -1,5 +1,5 @@
 const breackpointsContainter = {
-  base: "full",
+  base: "320px",
   sm: "540px",
   md: "720px",
   lg: "960px",
@@ -41,12 +41,18 @@ const breackpointsCartWidth = { base: "100%", md: "780px" };
 const breackpointsAppFooterFlex = { base: "column", md: "row" };
 const breakpointsFooterListMargin = { base: "0", md: "0 auto 0 1em" };
 const breakpointsFooterFlex = { base: "space-evenly", md: "space-between" };
-const breackpointsAppFooterPadding = { base: "20px 0", md: "60px 0" };
+const breackpointsAppFooterPadding = { base: "20px 0 0 0", md: "60px 0" };
 const breackpointsAppFooterList = { base: "full", md: "420px" };
 const breakpointsModalLoginPadding = { padding: "40px" };
-const breackpointsCartListPadding = "8px 45px 42px 45px ";
+const breackpointsCartListPadding = {
+  base: "8px 0 42px 0 ",
+  md: "8px 45px 42px 45px ",
+};
+
+const breakpointsCheckoutItem = { base: "full", sm: "345px", md: "480px" };
 
 export {
+  breakpointsCheckoutItem,
   breakpointsModalLoginPadding,
   breackpointsCartWidth,
   breackpointsCartListPadding,

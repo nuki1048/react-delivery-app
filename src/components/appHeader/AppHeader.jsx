@@ -6,7 +6,14 @@ import {
   InputGroup,
   InputLeftElement,
   useDisclosure,
+  Menu,
+  MenuList,
+  MenuItem,
+  MenuButton,
+  IconButton,
 } from "@chakra-ui/react";
+
+import { ExternalLinkIcon, HamburgerIcon, AtSignIcon } from "@chakra-ui/icons";
 
 import React from "react";
 import AppContainer from "../appContainer/AppContainer";
@@ -22,7 +29,7 @@ function AppHeader() {
     <AppContainer>
       <Flex
         alignItems="center"
-        justify={{ base: "space-around", md: "space-between" }}
+        justify="space-between"
         w="1200px"
         h="40px"
         mt="44px"
@@ -53,7 +60,32 @@ function AppHeader() {
           />
         </InputGroup>
 
-        <ButtonGroup>
+        <Menu>
+          <MenuButton
+            as={IconButton}
+            aria-label="Options"
+            icon={<HamburgerIcon />}
+            variant="outline"
+            display={{ base: "block", md: "none" }}
+          />
+          <MenuList width="full">
+            <MenuItem
+              icon={<AtSignIcon />}
+              command="⌘T"
+              onClick={modalLogin.onOpen}
+            >
+              Войти в систему
+            </MenuItem>
+            <MenuItem
+              icon={<ExternalLinkIcon />}
+              command="⌘N"
+              onClick={modalCart.onOpen}
+            >
+              Корзина
+            </MenuItem>
+          </MenuList>
+        </Menu>
+        <ButtonGroup display={{ base: "none", md: "flex" }}>
           <Button
             onClick={modalLogin.onOpen}
             backgroundColor="brand.blue"

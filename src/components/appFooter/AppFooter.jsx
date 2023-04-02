@@ -15,7 +15,7 @@ import {
 
 function AppFooter() {
   return (
-    <Box h="150px" p={breackpointsAppFooterPadding}>
+    <Box h={{ base: "full", md: "150px" }} p={breackpointsAppFooterPadding}>
       <AppContainer>
         <Flex
           w="full"
