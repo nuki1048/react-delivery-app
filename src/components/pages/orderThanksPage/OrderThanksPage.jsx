@@ -1,22 +1,14 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 import { CheckIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import AppContainer from "../../appContainer/AppContainer";
 import AppHeader from "../../appHeader/AppHeader";
 import AnimatedComponent from "../../animatedComponent/AnimatedComponent";
 
 function OrderThanksPage() {
-  const navigate = useNavigate();
-  const [time, setTime] = useState(10);
+  const { orderNum } = useParams();
 
-  const timeoutLink = setTimeout(() => {
-    setTime((state) => state - 1);
-  }, 1000);
-  if (time === 0) {
-    clearTimeout(timeoutLink);
-    navigate("/");
-  }
   return (
     <AnimatedComponent>
       <AppHeader />
@@ -28,20 +20,22 @@ function OrderThanksPage() {
           justify="space-between"
         >
           <Heading fontSize={{ base: "33px", md: "42px" }} as="h2">
-            Спасибо за заказ!
+            Заказ № {orderNum} принят в работу
           </Heading>{" "}
           <Text mt="30px" fontSize="24px" lineHeight="16px">
             {" "}
             Мы с вами свяжемся =)
           </Text>
           <CheckIcon mt="30px" color="green" w={40} h={40} />
-          <Text
-            borderBottom="1px solid"
-            mt="50px"
-            fontSize={{ base: "20px", md: "32px" }}
-          >
-            Вы перейдете на главную страницу через {time}
-          </Text>
+          <Link to="/">
+            <Text
+              borderBottom="1px solid"
+              mt="50px"
+              fontSize={{ base: "20px", md: "32px" }}
+            >
+              Ссылка на главную страницу
+            </Text>
+          </Link>
         </Flex>
       </AppContainer>
     </AnimatedComponent>

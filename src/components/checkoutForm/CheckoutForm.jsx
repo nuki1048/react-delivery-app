@@ -1,6 +1,6 @@
 /* eslint-disable react/no-children-prop */
 /* eslint-disable import/no-extraneous-dependencies */
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 
 import {
@@ -24,25 +24,27 @@ import valid from "card-validator";
 
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import applePay from "../../assets/applePay.svg";
-import foodService from "../../services/foodService";
-import { ShopContext } from "../../context/shop-context";
 
 import VisaIcon from "../icons/VisaIcon";
 import MasterCardIcon from "../icons/MasterCardIcon";
 import AmericanExpressIcon from "../icons/AmericanExpressIcon";
+import { clearCart, orderPlaces } from "../modalCart/modalCartSlice";
 
 function CheckoutForm({ amountWithTaxes }) {
   const navigate = useNavigate();
-  const { addNewDoc } = foodService();
+
   const [type, setType] = useState("");
-  const { clearCart, cart, data } = useContext(ShopContext);
+  const { menuData } = useSelector((state) => state.menu);
+  const dispatch = useDispatch();
+  const { cart } = useSelector((state) => state.cart);
 
   const createCartObj = () => {
     const cartPositions = {};
     // eslint-disable-next-line array-callback-return
-    data.map((item) => {
-      if (+cart[item.id] !== 0 && cart[item.id] !== undefined) {
+    menuData.map((item) => {
+      if (+cart[item.id] >= 0) {
         cartPositions[item.id] = item.name;
       }
     });
@@ -113,15 +115,20 @@ function CheckoutForm({ amountWithTaxes }) {
         // eslint-disable-next-line no-unused-vars
         const numberOrder = Math.floor(Math.random() * (12414 - 1000) + 1000);
         const cartPos = createCartObj();
-        addNewDoc("ORDERS", {
-          email: values.email,
-          name: values.nameOnCard,
-          orderNum: numberOrder,
-          region: values.region,
-          cart: { ...cartPos },
-        });
-        navigate("/orderThanks");
-        clearCart();
+        dispatch(
+          orderPlaces({
+            order: {
+              email: values.email,
+              name: values.nameOnCard,
+              orderNum: numberOrder,
+              region: values.region,
+              cart: { ...cartPos },
+              date: Date.now(),
+            },
+          })
+        );
+        navigate(`/orderThanks/${numberOrder}`);
+        dispatch(clearCart());
       }
     },
   });

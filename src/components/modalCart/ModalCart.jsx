@@ -4,6 +4,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { Flex, Heading, Box, List, Button, Spinner } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useDispatch, useSelector } from "react-redux";
 import CartItem from "../cartItem/CartItem";
 import {
   breackpointsCartFullAmountHeight,
@@ -11,33 +13,23 @@ import {
 } from "../../theme/breakpoints";
 
 import ErrorMessage from "../errorMessage/ErrorMessage";
-import foodService from "../../services/foodService";
-import { ShopContext } from "../../context/shop-context";
+
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
+import { fetchMenu } from "../pages/restaurantPage/restaurantsPageSlice";
+import { getTotalCartAmount } from "./modalCartSlice";
 
 function ModalCart({ onClose }) {
-  const { cart, getTotalCartAmount } = useContext(ShopContext);
-  const totalAmount = getTotalCartAmount();
+  // const { cart, getTotalCartAmount } = useContext(ShopContext);
+  const totalAmount = useSelector(getTotalCartAmount);
+  const { cart, cartLoadingStatus } = useSelector((state) => state.cart);
+  const { menuData, menuLoadingStatus } = useSelector((state) => state.menu);
 
-  const { loading, error, getFullCollection } = foodService();
-  const [data, setData] = useState([]);
   const navigate = useNavigate();
-
-  const onDataLoaded = (newData) => {
-    setData(newData);
-  };
-  const getData = () => {
-    getFullCollection("PRODUCTS").then(onDataLoaded);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const renderItems = (arr) => {
     // eslint-disable-next-line array-callback-return, consistent-return
     return arr.map((item) => {
-      if (+cart[item.id] !== 0 && cart[item.id] !== undefined) {
+      if (+cart[item.id] >= 0) {
         return (
           <CartItem
             key={item.id}
@@ -55,11 +47,12 @@ function ModalCart({ onClose }) {
     onClose();
     navigate("/checkout");
   };
-  const items = !(loading || error || !data) ? renderItems(data) : null;
-  const errorMessage = error ? <ErrorMessage /> : null;
-  const loadingSpinner = loading ? (
-    <Spinner w="100px" h="100px" ml="30%" />
-  ) : null;
+  const items = renderItems(menuData);
+  const errorMessage = menuLoadingStatus === "error" ? <ErrorMessage /> : null;
+  const loadingSpinner =
+    menuLoadingStatus === "loading" ? (
+      <Spinner w="100px" h="100px" ml="30%" />
+    ) : null;
   const cartEmpty = totalAmount ? null : (
     <Heading as="h2" textAlign="center" m="50px 0" fontSize="24px">
       Ваша коризна пуста!
@@ -80,8 +73,8 @@ function ModalCart({ onClose }) {
           >
             {items}
             {errorMessage}
-            {loadingSpinner}
             {cartEmpty}
+            {menuLoadingStatus}
           </List>
         </ErrorBoundary>
       </Flex>

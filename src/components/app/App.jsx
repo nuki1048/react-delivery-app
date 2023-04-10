@@ -25,7 +25,7 @@ function App() {
           <Route path="/restaurats/:storeName" element={<RestaurantPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="*" element={<ErrorPage />} />
-          <Route path="/orderThanks" element={<OrderThanksPage />} />
+          <Route path="/orderThanks/:orderNum" element={<OrderThanksPage />} />
         </Routes>
       </AnimatePresence>
     </Suspense>

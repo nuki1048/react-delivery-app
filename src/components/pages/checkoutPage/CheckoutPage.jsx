@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import React, { useContext } from "react";
+import React from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import {
@@ -14,24 +14,26 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
+import { useSelector } from "react-redux";
 import logo from "../../../assets/logo.svg";
 
 import CheckoutItem from "../../checkoutItem/CheckoutItem";
-import { ShopContext } from "../../../context/shop-context";
+
 import CheckoutForm from "../../checkoutForm/CheckoutForm";
 import AnimatedComponent from "../../animatedComponent/AnimatedComponent";
+import { getTotalCartAmount } from "../../modalCart/modalCartSlice";
 
 function CheckoutPage() {
-  const { data, cart, getTotalCartAmount } = useContext(ShopContext);
-
-  const amountWithOutTaxes = getTotalCartAmount();
+  const { cart } = useSelector((state) => state.cart);
+  const { menuData } = useSelector((state) => state.menu);
+  const amountWithOutTaxes = useSelector(getTotalCartAmount);
   const amountTaxes = Math.round((amountWithOutTaxes / 100) * 6.5);
   const amountWithTaxes = amountWithOutTaxes + amountTaxes;
 
   const renderItems = (arr) =>
     // eslint-disable-next-line array-callback-return, consistent-return
     arr?.map((item) => {
-      if (+cart[item.id] !== 0 && cart[item.id] !== undefined) {
+      if (+cart[item.id] >= 0) {
         return (
           <CheckoutItem
             key={item.id}
@@ -44,7 +46,7 @@ function CheckoutPage() {
       }
     });
 
-  const items = renderItems(data);
+  const items = renderItems(menuData);
   return (
     <AnimatedComponent>
       <Box

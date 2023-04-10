@@ -1,17 +1,20 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import React, { useContext, useRef } from "react";
+import React, { useRef } from "react";
 import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/react";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import { breakpointsItem } from "../../theme/breakpoints";
-import { ShopContext } from "../../context/shop-context";
+
+import { addNewItem } from "../modalCart/modalCartSlice";
 // import { ShopContext } from "../../context/shop-context";
 
 function MenuItem({ name, price, description, image, id }) {
   const toast = useToast();
   const toastIdRef = useRef();
-  const { addToCart } = useContext(ShopContext);
+  const dispatch = useDispatch();
+
   const descriptionSlice =
     description.length > 50 ? `${description.slice(0, 50)}...` : description;
   const addToast = () => {
@@ -23,7 +26,7 @@ function MenuItem({ name, price, description, image, id }) {
   };
   const onItemAddToCart = (IdentityDocument) => {
     addToast();
-    addToCart(IdentityDocument);
+    dispatch(addNewItem(IdentityDocument));
   };
 
   return (

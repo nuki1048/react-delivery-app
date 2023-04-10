@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Heading, Input, Spinner } from "@chakra-ui/react";
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useDispatch, useSelector } from "react-redux";
 import AppHeader from "../../appHeader/AppHeader";
 import AppBanner from "../../appBanner/AppBanner";
 import AppFooter from "../../appFooter/AppFooter";
@@ -12,40 +14,41 @@ import {
 
 import RestaurantsList from "../../restaurantsList/RestaurantsList";
 import ErrorBoundary from "../../errorBoundary/ErrorBoundary";
-import foodService from "../../../services/foodService";
+
 import AnimatedComponent from "../../animatedComponent/AnimatedComponent";
+import { fetchRestaurants } from "./mainPageSlice";
 
 function MainPage() {
   const [term, setTerm] = useState("");
-  const [restauratsData, setRestauratsData] = useState([]);
-  const { loading, error, getFullCollection } = foodService();
-
-  const onItemLoaded = (data) => {
-    setRestauratsData(data);
-  };
-
-  const getDataRestaurans = () => {
-    getFullCollection("RESTAURANTS").then(onItemLoaded);
-  };
+  // const [restauratsData, setRestauratsData] = useState([]);
+  // const { loading, error, getFullCollection } = foodService();
+  const { restaurantsData, restaurantsLoadingStatus } = useSelector(
+    (state) => state.restaurants
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getDataRestaurans();
+    // getDataRestaurans();
+    dispatch(fetchRestaurants("RESTAURANTS"));
   }, []);
 
   const filteredData = (arr) =>
     arr.filter((item) => item.name.toLowerCase().includes(term.toLowerCase()));
 
-  const data = filteredData(restauratsData);
+  const data = filteredData(restaurantsData);
 
-  const loadingSpinner = loading ? (
-    <Spinner ml="500px" gridColumn="1/4" w="200px" h="200px" />
-  ) : null;
+  const loadingSpinner =
+    restaurantsLoadingStatus === "loading" ? (
+      <Spinner ml="500px" gridColumn="1/4" w="200px" h="200px" />
+    ) : null;
 
-  const Error404Message = error ? <ErrorMessage /> : null;
+  const Error404Message =
+    restaurantsLoadingStatus === "error" ? <ErrorMessage /> : null;
 
-  const items = !(error || loading || !restauratsData) ? (
-    <RestaurantsList data={data} />
-  ) : null;
+  const items =
+    restaurantsLoadingStatus === "idle" ? (
+      <RestaurantsList data={data} />
+    ) : null;
 
   return (
     <AnimatedComponent>

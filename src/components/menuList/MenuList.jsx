@@ -1,41 +1,42 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable import/no-extraneous-dependencies */
+import React, { useEffect } from "react";
 
 import { Box, Grid, Heading, Spinner } from "@chakra-ui/react";
-import PropTypes from "prop-types";
+
 import { Link } from "react-router-dom";
 // import { ShopContext } from "../../context/shop-context";
-import foodService from "../../services/foodService";
+import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "@reduxjs/toolkit";
+
 import { breackpointsGrid } from "../../theme/breakpoints";
 
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import MenuItem from "../menuItem/MenuItem";
 import AnimatedComponent from "../animatedComponent/AnimatedComponent";
+import { fetchMenu } from "../pages/restaurantPage/restaurantsPageSlice";
 
-function MenuList({ storeName }) {
-  const { loading, error, getFullCollection } = foodService();
-  const [data, setData] = useState([]);
-  const onDataLoaded = (newData) => {
-    setData(newData);
-  };
-
-  const getData = () => {
-    getFullCollection("PRODUCTS").then(onDataLoaded);
-  };
-
+function MenuList() {
+  const filter = createSelector(
+    (state) => state.menu.menuData,
+    (state) => state.menu.storeName,
+    (menu, name) => menu.filter((item) => item.storeName === name)
+  );
+  const { menuLoadingStatus } = useSelector((state) => state.menu);
+  const filteredData = useSelector(filter);
+  const dispatch = useDispatch();
   useEffect(() => {
-    getData();
+    dispatch(fetchMenu());
   }, []);
 
   const renderItems = (arr) => {
-    const filteredArr = arr?.filter((item) => item.storeName === storeName);
     const items =
-      filteredArr.length > 0 ? (
-        filteredArr.map((item) => (
+      arr.length > 0 ? (
+        arr.map((item) => (
           <MenuItem
             key={item.id}
             id={item.id}
             name={item.name}
-            price={item.price}
+            price={+item.price}
             description={item.description}
             image={item.image}
           />
@@ -52,12 +53,12 @@ function MenuList({ storeName }) {
       );
     return items;
   };
-  const items = !(loading || error || !data) ? renderItems(data) : null;
-  const spinnerLoading = loading ? (
-    <Spinner width="200px" height="200px" gridColumn="1/4" />
-  ) : null;
-  const error404 = error ? <ErrorMessage /> : null;
-
+  const items = menuLoadingStatus === "idle" ? renderItems(filteredData) : null;
+  const loadingSpinner =
+    menuLoadingStatus === "loading" ? (
+      <Spinner width="200px" height="200px" gridColumn="1/4" />
+    ) : null;
+  const error = menuLoadingStatus === "error" ? <ErrorMessage /> : null;
   return (
     <AnimatedComponent>
       <Grid
@@ -68,15 +69,11 @@ function MenuList({ storeName }) {
         gap="30px 24px"
         justifyItems="center"
       >
+        {error}
         {items}
-        {spinnerLoading}
-        {error404}
+        {loadingSpinner}
       </Grid>
     </AnimatedComponent>
   );
 }
-MenuList.propTypes = {
-  storeName: PropTypes.string.isRequired,
-};
-
 export default MenuList;
