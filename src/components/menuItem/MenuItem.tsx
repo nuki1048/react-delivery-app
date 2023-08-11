@@ -6,7 +6,7 @@ import { useToast } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { breakpointsItem } from '../../theme/breakpoints';
 
-import { addNewItem } from '../modalCart/modalCartSlice';
+import { addNewItem } from '../../store/slices/modalCartSlice';
 import { MenuItemProps } from './MenuItem.props';
 // import { ShopContext } from "../../context/shop-context";
 
@@ -25,14 +25,20 @@ function MenuItem({
     description.length > 50 ? `${description.slice(0, 50)}...` : description;
   const addToast = () => {
     toastIdRef.current = toast({
-      description: `Товар успешно добавлен в корзину`,
+      description: 'The product has been successfully added to the cart',
       status: 'success',
       isClosable: true,
     });
   };
-  const onItemAddToCart = (IdentityDocument: string): void => {
+  const onItemAddToCart = (): void => {
+    const cartItem = {
+      image,
+      name,
+      price,
+      id,
+    };
     addToast();
-    dispatch(addNewItem(IdentityDocument));
+    dispatch(addNewItem(cartItem));
   };
 
   return (
@@ -69,7 +75,7 @@ function MenuItem({
         align='center'
       >
         <Button
-          onClick={() => onItemAddToCart(id)}
+          onClick={(): void => onItemAddToCart()}
           w='124px'
           h='40px'
           backgroundColor='brand.blue'

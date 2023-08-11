@@ -16,12 +16,13 @@ import * as Yup from 'yup';
 
 import { useRef, useState } from 'react';
 import { ModalProps } from '../ModalTemplate/ModalTemplate.props';
+import { modalLoginFormButton } from '../../theme/styles';
 
 function ModalLoginForm({ onClose }: ModalProps): JSX.Element {
   const toast = useToast();
-  const toastIdRef = useRef();
-  const [type, setType] = useState(true);
-  const addToast = (values) => {
+  const toastIdRef = useRef<string | number>();
+  const [type, setType] = useState<boolean>(true);
+  const addToast = (values: string): void => {
     toastIdRef.current = toast({
       description: `Hello ${values}, you have logged in successfully`,
       status: 'success',
@@ -43,7 +44,7 @@ function ModalLoginForm({ onClose }: ModalProps): JSX.Element {
         .required('Required field'),
     }),
     onSubmit: (values) => {
-      formik.resetForm({ name: '', email: '' });
+      formik.resetForm();
       addToast(values.email);
       onClose();
     },
@@ -108,14 +109,7 @@ function ModalLoginForm({ onClose }: ModalProps): JSX.Element {
                 Show password?
               </FormLabel>
             </Flex>
-            <Button
-              backgroundColor='brand.blue'
-              color='#fff'
-              borderRadius='2px'
-              type='submit'
-            >
-              Log in
-            </Button>
+            <Button {...modalLoginFormButton}>Log in</Button>
           </VStack>
         </form>
       </Flex>

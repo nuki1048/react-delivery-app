@@ -1,23 +1,29 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { useEffect } from 'react';
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Heading, Text } from '@chakra-ui/react';
 
 import { useParams } from 'react-router-dom';
 import AppFooter from '../../appFooter/AppFooter';
 import AppHeader from '../../appHeader/AppHeader';
-// import MenuItem from "../../menuItem/MenuItem";
-// import { breackpointsGrid } from "../../../theme/breakpoints";
 
-// import { ErrorMessage } from "formik";
 import MenuList from '../../menuList/MenuList';
 import ErrorBoundary from '../../errorBoundary/ErrorBoundary';
 import AnimatedComponent from '../../animatedComponent/AnimatedComponent';
-import { fetchRestaurantInfo, setStoreName } from './restaurantsPageSlice';
+import {
+  fetchRestaurantInfo,
+  setStoreName,
+} from '../../../store/slices/restaurantsPageSlice';
 import { useAppDispatch, useAppSelector } from '../../../store';
+import {
+  restaurantInfoRating,
+  restaurantInfoText,
+  restaurantItemRatingBefore,
+  restaurantPageFlex,
+  restaurantPageHeading,
+} from '../../../theme/styles';
 
 function RestaurantPage(): JSX.Element {
   const { storeName } = useParams();
-  const { restaurantInfo } = useAppSelector((state) => state.menu);
+  const restaurantInfo = useAppSelector((state) => state.menu.restaurantInfo);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -32,49 +38,21 @@ function RestaurantPage(): JSX.Element {
   return (
     <AnimatedComponent>
       <AppHeader />
-      <Flex
-        mt='43px'
-        w={{ base: 'full', md: '443px' }}
-        h='42px'
-        align='center'
-        justify={{ base: 'space-evenly', md: 'space-between' }}
-      >
-        <Text as='h5' fontWeight='700' fontSize='36px' lineHeight='42px'>
-          {restaurantInfo?.name}
-        </Text>
+      <Flex {...restaurantPageFlex}>
+        <Heading as='h5' {...restaurantPageHeading}>
+          {restaurantInfo.name}
+        </Heading>
         <Text
-          display={{ base: 'none', md: 'block' }}
-          fontWeight='700'
-          fontSize='18px'
-          lineHeight='32px'
-          color='brand.yellow'
+          {...restaurantInfoRating}
           position='relative'
-          _before={{
-            content: '"★"',
-            position: 'absolute',
-            right: '70%',
-            transform: 'translateX(-70%)',
-          }}
+          _before={restaurantItemRatingBefore}
         >
-          {restaurantInfo?.rating}
+          {restaurantInfo.rating}
         </Text>
-        <Text
-          display={{ base: 'none', md: 'block' }}
-          fontWeight='400'
-          fontSize='18px'
-          lineHeight='32px'
-          color='brand.gray'
-        >
-          От {restaurantInfo?.startingPrice} ₴
+        <Text display={{ base: 'none', md: 'block' }} {...restaurantInfoText}>
+          От {restaurantInfo.startingPrice} ₴
         </Text>
-        <Text
-          fontWeight='400'
-          fontSize='18px'
-          lineHeight='32px'
-          color='brand.gray'
-        >
-          {restaurantInfo?.category}
-        </Text>
+        <Text {...restaurantInfoText}>{restaurantInfo.category}</Text>
       </Flex>
       <ErrorBoundary>
         <MenuList />

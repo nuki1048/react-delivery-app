@@ -29,10 +29,20 @@ import applePay from '../../assets/applePay.svg';
 import VisaIcon from '../icons/VisaIcon';
 import MasterCardIcon from '../icons/MasterCardIcon';
 import AmericanExpressIcon from '../icons/AmericanExpressIcon';
-import { clearCart, orderPlaces } from '../modalCart/modalCartSlice';
+import { clearCart, orderPlaces } from '../../store/slices/modalCartSlice';
 import { CheckoutFormProps } from './CheckoutForm.props';
 import { RootState, useAppDispatch, useAppSelector } from '../../store';
-import { Cart } from '../../global/interfaces';
+import { CartItem, CartOrder } from '../../global/interfaces';
+import {
+  checkoutFormAfter,
+  checkoutFormApplePayButton,
+  checkoutFormBefore,
+  checkoutFormButtonSubmit,
+  checkoutFormChoiceStyle,
+  checkoutFormGridItem,
+  checkoutFormInput,
+  checkoutFormSelect,
+} from '../../theme/styles';
 
 const data = [
   'Odessa Oblast',
@@ -59,18 +69,16 @@ function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
   const navigate = useNavigate();
 
   const [type, setType] = useState<string>('');
-  const { menuData } = useAppSelector((state: RootState) => state.menu);
   const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state: RootState) => state.cart);
 
   const createCartObj = () => {
-    const cartPositions: Cart = {};
+    const cartPositions: CartOrder[] = [];
     // eslint-disable-next-line array-callback-return
-    menuData.map((item) => {
-      const counterItem = cart[item.id];
-      const position = item.id;
-      if (counterItem >= 0) {
-        cartPositions[position] = item.name;
+    cart.map((item: CartItem) => {
+      if (item.amount >= 0) {
+        const cartItem = { name: item.name, amount: item.amount };
+        cartPositions.push(cartItem);
       }
     });
     return cartPositions;
@@ -147,7 +155,7 @@ function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
               name: values.nameOnCard,
               orderNum: numberOrder,
               region: values.region,
-              cart: { ...cartPos },
+              cart: cartPos,
               date: new Date(),
             },
           })
@@ -173,44 +181,16 @@ function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
   const iconCard = typeCardBrand(type);
 
   return (
-    <GridItem w={{ base: 'full', md: '421px' }} h='full' justifySelf='center'>
-      <Button
-        backgroundColor='#000'
-        boxShadow=' 0px -1px 1px rgba(0, 0, 0, 0.12), 0px 2px 5px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.08)'
-        h='48px'
-        w='full'
-        _hover={{ backgroundColor: 'rgba(0,0,0,.6)' }}
-      >
+    <GridItem {...checkoutFormGridItem}>
+      <Button {...checkoutFormApplePayButton}>
         <Image src={applePay} />
       </Button>
       <Box
-        mt='32px'
-        position='relative'
-        _before={{
-          content: '""',
-          position: 'absolute',
-          left: '-5px',
-
-          top: '50%',
-          width: { base: '55px', md: '125px' },
-          height: '1px',
-          backgroundColor: 'rgba(60, 66, 87,.12)',
-        }}
-        _after={{
-          content: '""',
-          position: 'absolute',
-          right: '-5px',
-
-          top: '50%',
-          width: { base: '55px', md: '125px' },
-          height: '1px',
-          backgroundColor: 'rgba(60, 66, 87,.12)',
-        }}
+        {...checkoutFormChoiceStyle}
         textAlign='center'
-        color=' #8792A2'
-        fontWeight='400'
-        fontSize='16px'
-        lineHeight='24px'
+        position='relative'
+        _before={checkoutFormBefore}
+        _after={checkoutFormAfter}
       >
         Or pay with a card
       </Box>
@@ -312,9 +292,7 @@ function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
                 value={formik.values.region}
                 onBlur={formik.handleBlur}
                 name='region'
-                borderRadius='8px 8px 0px 0px'
-                placeholder='Select an area'
-                variant='outline'
+                {...checkoutFormSelect}
               >
                 {data.map((region: string) => (
                   <option value={region} key={region}>
@@ -332,10 +310,7 @@ function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
                 value={formik.values.index}
                 onBlur={formik.handleBlur}
                 name='index'
-                w={{ base: 'full', md: '421px' }}
-                borderRadius=' 0px 0px 8px 8px'
-                color='#697386'
-                placeholder='Index'
+                {...checkoutFormInput}
               />
               {formik.touched.index && formik.errors.index ? (
                 <Box color='#E53E3E' mt='15px'>
@@ -345,12 +320,8 @@ function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
             </FormControl>
             <Button
               type='submit'
-              h='48px'
-              background='brand.blue'
-              color=' #FFF'
-              w='full'
+              {...checkoutFormButtonSubmit}
               isDisabled={!amountWithTaxes}
-              _hover={{ background: 'rgba(24, 144, 255,.5)' }}
             >
               To pay ₴{amountWithTaxes}
             </Button>

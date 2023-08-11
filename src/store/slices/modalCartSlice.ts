@@ -4,40 +4,49 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/no-extraneous-dependencies */
 import {
+  PayloadAction,
   createAsyncThunk,
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import { addDoc, collection } from 'firebase/firestore';
+import {
+  DocumentData,
+  DocumentReference,
+  addDoc,
+  collection,
+} from 'firebase/firestore';
 import { db } from '../../config/firebase';
-import { RootState } from '../../store';
-import { CheckoutFormOrder } from '../../global/interfaces';
+import { RootState } from '..';
+import {
+  CartItem,
+  CartItemSlice,
+  CheckoutFormOrder,
+} from '../../global/interfaces';
 
-interface cartItem {
-  [key: string]: number;
-}
-
-interface initialStateCart {
-  cart: cartItem;
+interface InitialStateCart {
+  cart: CartItem[];
   cartLoadingStatus: 'idle' | 'loading' | 'error';
   orderStatus: 'waiting' | 'loadindToEnter' | 'EnteredToDB' | 'Error';
 }
 
-const initialState: initialStateCart = {
-  cart: {},
+const initialState: InitialStateCart = {
+  cart: [],
   cartLoadingStatus: 'idle',
   orderStatus: 'waiting',
 };
 export const orderPlaces = createAsyncThunk(
   'cart/orderPlaced',
-  async (payload: CheckoutFormOrder, { rejectWithValue }) => {
+  async (
+    payload: CheckoutFormOrder,
+    { rejectWithValue }
+  ): Promise<DocumentReference<DocumentData>> => {
     try {
       const { order } = payload;
       return await addDoc(collection(db, 'ORDERS'), order);
 
       // eslint-disable-next-line no-shadow
     } catch (error) {
-      return rejectWithValue(`we can't add this doc on `);
+      throw rejectWithValue(`we can't add this doc on `);
     }
   }
 );
@@ -45,16 +54,30 @@ const itemsCart = createSlice({
   name: 'itemsCart',
   initialState,
   reducers: {
-    addNewItem: (state, action) => {
-      state.cart[action.payload] = (state.cart[action.payload] || 0) + 1;
+    addNewItem: (state, action: PayloadAction<CartItemSlice>) => {
+      const itemCart = state.cart.find((item) => item.id === action.payload.id);
+      if (itemCart) {
+        itemCart.amount++;
+      }
+      if (!itemCart) {
+        const newCartItem = { ...action.payload, amount: 1 };
+        state.cart.push(newCartItem);
+      }
     },
-    removeItem: (state, action) => {
-      state.cart[action.payload] > 1
-        ? state.cart[action.payload]--
-        : delete state.cart[action.payload];
+    removeItem: (state, action: PayloadAction<CartItemSlice>) => {
+      const itemCart = state.cart.find((item) => item.id === action.payload.id);
+      if (!itemCart) {
+        return state;
+      }
+      if (itemCart.amount > 1) {
+        itemCart.amount--;
+      }
+      if (itemCart.amount === 1) {
+        state.cart = state.cart.filter((item) => item.id !== action.payload.id);
+      }
     },
     clearCart: (state) => {
-      state.cart = {};
+      state.cart = [];
     },
   },
   extraReducers: (builder) => {
@@ -71,17 +94,11 @@ const itemsCart = createSlice({
   },
 });
 export const getTotalCartAmount = createSelector(
-  (state: RootState) => state.menu.menuData,
   (state: RootState) => state.cart.cart,
-  (menu, cart) => {
+  (cart: CartItem[]): number => {
     let totalAmount = 0;
-    Object.keys(cart).forEach((item) => {
-      if (cart[item] > 0) {
-        const itemInfo = menu.find((product) => product.id === item);
-        if (itemInfo) {
-          totalAmount += cart[item] * itemInfo.price;
-        }
-      }
+    cart.forEach((cartItem: CartItem): void => {
+      totalAmount += cartItem.amount * cartItem.price;
     });
     return totalAmount;
   }

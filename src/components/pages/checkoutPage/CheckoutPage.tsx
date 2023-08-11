@@ -19,64 +19,46 @@ import CheckoutItem from '../../checkoutItem/CheckoutItem';
 
 import CheckoutForm from '../../checkoutForm/CheckoutForm';
 import AnimatedComponent from '../../animatedComponent/AnimatedComponent';
-import { getTotalCartAmount } from '../../modalCart/modalCartSlice';
+import { getTotalCartAmount } from '../../../store/slices/modalCartSlice';
 import { useAppSelector } from '../../../store';
-import { MenuItem } from '../../../global/interfaces';
+import { CartItem } from '../../../global/interfaces';
+import {
+  checkoutPageFlex,
+  checkoutPageGrid,
+  checkoutPageListItem,
+  checkoutPagePrivacy,
+  checkoutPageTerms,
+  checkoutPageUl,
+  checkoutPageUlTwo,
+  checkoutPageWrapper,
+} from '../../../theme/styles';
 
 function CheckoutPage(): JSX.Element {
   const { cart } = useAppSelector((state) => state.cart);
-  const { menuData } = useAppSelector((state) => state.menu);
   const amountWithOutTaxes = useAppSelector(getTotalCartAmount);
   const amountTaxes = Math.round((amountWithOutTaxes / 100) * 6.5);
   const amountWithTaxes = amountWithOutTaxes + amountTaxes;
 
-  const renderItems = (arr: MenuItem[]): JSX.Element[] => {
-    if (arr) {
-      return arr.map((item: MenuItem) => {
-        if (cart[item.id] >= 0) {
-          return (
-            <CheckoutItem
-              key={item.id}
-              name={item.name}
-              price={+item.price}
-              image={item?.image}
-              amount={+cart[item.id]}
-            />
-          );
-        } else {
-          return <></>;
-        }
-      });
-    } else {
-      return [<></>, <></>];
-    }
+  const renderItems = (arr: CartItem[]): JSX.Element[] => {
+    return arr.map((cartItem: CartItem) => (
+      <CheckoutItem
+        key={cartItem.id}
+        name={cartItem.name}
+        price={cartItem.price}
+        image={cartItem.image}
+        amount={cartItem.amount}
+      />
+    ));
   };
 
-  const items = renderItems(menuData);
+  const items = renderItems(cart);
   return (
     <AnimatedComponent>
-      <Box
-        minH='670px'
-        p={{
-          base: '20px',
-          sm: '50px',
-          lg: '100px 50px ',
-          xl: '103px 177px 127px 150px',
-        }}
-      >
-        <Grid
-          gap={{ base: '40px', lg: '100px', xl: '190px' }}
-          templateColumns={{ md: '1fr', lg: '1fr 2fr' }}
-        >
+      <Box {...checkoutPageWrapper}>
+        <Grid {...checkoutPageGrid}>
           <GridItem gridColumn='1/2'>
             <Link to='/'>
-              <Flex
-                _hover={{ transform: 'scale(1.02)' }}
-                transition='0.5s all'
-                w='150px'
-                align='center'
-                justify='space-between'
-              >
+              <Flex {...checkoutPageFlex}>
                 <ArrowBackIcon />
                 <Image borderRadius='100%' width='32px' h='32px' src={logo} />
                 <Text fontSize='14px'>Delivery Food</Text>
@@ -99,42 +81,25 @@ function CheckoutPage(): JSX.Element {
 
             <Box w={{ base: 'full', md: '350px' }}>
               <UnorderedList
-                maxH='200px'
-                w='full'
-                overflow='scroll'
+                {...checkoutPageUl}
                 style={{ scrollbarWidth: 'none' }}
-                mt='30px'
-                ml='0'
-                spacing='23px'
               >
                 {items}
               </UnorderedList>
-              <UnorderedList
-                w='257px'
-                m={{ base: '30px auto 0 auto', md: '23px 0 0 auto ' }}
-                listStyleType='none'
-              >
-                <ListItem
-                  h='44px'
-                  p='12px 0'
-                  borderBottom='1px solid rgba(60, 66, 87, 0.12)'
-                >
+              <UnorderedList {...checkoutPageUlTwo}>
+                <ListItem {...checkoutPageListItem}>
                   <Flex align='center' justify='space-between'>
                     <Text color='#1A1F36'>Subtotal</Text>{' '}
                     <Text color=' #1A1F36'>₴{amountWithOutTaxes}</Text>
                   </Flex>
                 </ListItem>
-                <ListItem
-                  h=' 44px'
-                  p='12px 0'
-                  borderBottom='1px solid rgba(60, 66, 87, 0.12)'
-                >
+                <ListItem {...checkoutPageListItem}>
                   <Flex align='center' justify='space-between'>
                     <Text color='#697386'>Sales tax (6.5%)</Text>{' '}
                     <Text color='#697386'>₴{amountTaxes}</Text>
                   </Flex>
                 </ListItem>
-                <ListItem h=' 44px' p='12px 0'>
+                <ListItem h='44px' p='12px 0'>
                   <Flex align='center' justify='space-between'>
                     <Text color='#697386'>Total due</Text>{' '}
                     <Text color='#697386'>₴{amountWithTaxes}</Text>
@@ -142,20 +107,11 @@ function CheckoutPage(): JSX.Element {
                 </ListItem>
               </UnorderedList>
             </Box>
-            <Box
-              mt='120px'
-              display={{ base: 'none', md: 'none', xl: 'flex' }}
-              alignContent='center'
-            >
+            <Box {...checkoutPageTerms}>
               <Flex align='center' w='263px' justify='space-between'>
                 <Text fontSize='12px'>Powered by</Text>
                 <Image borderRadius='100%' width='32px' src={logo} />
-                <Box
-                  w='22px'
-                  h='0'
-                  border='1px solid #8792A2'
-                  transform='rotate(90deg)'
-                />
+                <Box {...checkoutPagePrivacy} />
                 <Text fontSize='12px'>Terms</Text>
                 <Text fontSize='12px'>Privacy</Text>
               </Flex>

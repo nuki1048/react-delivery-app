@@ -1,23 +1,23 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
-import { db } from '../../../config/firebase';
-import { transformData } from '../../../lib/firebase-utils';
-import { MenuItem } from '../../../global/interfaces';
+import { db } from '../../config/firebase';
+import { transformData } from '../../lib/firebase-utils';
+import { MenuItem, RestaurantListItem } from '../../global/interfaces';
 
 interface initialState {
   menuData: MenuItem[];
   menuLoadingStatus: 'idle' | 'loading' | 'error';
   storeName: string;
-  restaurantInfo: any;
+  restaurantInfo: Partial<RestaurantListItem>;
 }
 
 const initialState: initialState = {
   menuData: [],
   menuLoadingStatus: 'idle',
   storeName: '',
-  restaurantInfo: null,
+  restaurantInfo: {},
 };
 
 interface fetchRestaurantInfoInterface {
@@ -27,27 +27,30 @@ interface fetchRestaurantInfoInterface {
 
 export const fetchRestaurantInfo = createAsyncThunk(
   'menu/fetchRestaurantInfo',
-  async (payload: fetchRestaurantInfoInterface, { rejectWithValue }) => {
+  async (
+    payload: fetchRestaurantInfoInterface,
+    { rejectWithValue }
+  ): Promise<RestaurantListItem> => {
     try {
       const { collectionName, storeName } = payload;
       const docRef = doc(db, collectionName, storeName);
       const docSnap = await getDoc(docRef);
 
-      return docSnap.data();
+      return docSnap.data() as RestaurantListItem;
     } catch (error) {
-      return rejectWithValue(`Unable to load data from this collection`);
+      throw rejectWithValue(`Unable to load data from this collection`);
     }
   }
 );
 export const fetchMenu = createAsyncThunk(
   'menu/fetchMenu',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue }): Promise<MenuItem[]> => {
     try {
       const collectionP = collection(db, 'PRODUCTS');
       const data = await getDocs(collectionP);
       return data.docs.map(transformData<MenuItem>);
     } catch (error) {
-      return rejectWithValue(`Unable to load data from this collection`);
+      throw rejectWithValue(`Unable to load data from this collection`);
     }
   }
 );
@@ -56,7 +59,7 @@ const restaurantsPageSlice = createSlice({
   name: 'mainPage',
   initialState,
   reducers: {
-    setStoreName: (state, action) => {
+    setStoreName: (state, action: PayloadAction<string>) => {
       state.storeName = action.payload;
     },
   },
@@ -65,20 +68,26 @@ const restaurantsPageSlice = createSlice({
       .addCase(fetchRestaurantInfo.pending, (state) => {
         state.menuLoadingStatus = 'loading';
       })
-      .addCase(fetchRestaurantInfo.fulfilled, (state, action) => {
-        state.restaurantInfo = action.payload;
-        state.menuLoadingStatus = 'idle';
-      })
+      .addCase(
+        fetchRestaurantInfo.fulfilled,
+        (state, action: PayloadAction<RestaurantListItem>) => {
+          state.restaurantInfo = action.payload;
+          state.menuLoadingStatus = 'idle';
+        }
+      )
       .addCase(fetchRestaurantInfo.rejected, (state) => {
         state.menuLoadingStatus = 'error';
       })
       .addCase(fetchMenu.pending, (state) => {
         state.menuLoadingStatus = 'loading';
       })
-      .addCase(fetchMenu.fulfilled, (state, action) => {
-        state.menuData = action.payload;
-        state.menuLoadingStatus = 'idle';
-      })
+      .addCase(
+        fetchMenu.fulfilled,
+        (state, action: PayloadAction<MenuItem[]>) => {
+          state.menuData = action.payload;
+          state.menuLoadingStatus = 'idle';
+        }
+      )
       .addCase(fetchMenu.rejected, (state) => {
         state.menuLoadingStatus = 'error';
       });

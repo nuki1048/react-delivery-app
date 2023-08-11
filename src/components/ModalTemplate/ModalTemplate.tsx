@@ -7,7 +7,6 @@ import {
   ModalContent,
   ModalOverlay,
 } from '@chakra-ui/react';
-import PropsTypes from 'prop-types';
 import {
   breackpointsCartListPadding,
   breackpointsCartWidth,
@@ -46,10 +45,4 @@ function ModalTemplate({
   );
 }
 
-ModalTemplate.propTypes = {
-  Component: PropsTypes.func.isRequired,
-  dataType: PropsTypes.string.isRequired,
-  isOpen: PropsTypes.bool.isRequired,
-  onClose: PropsTypes.func.isRequired,
-};
 export default ModalTemplate;

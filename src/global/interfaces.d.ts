@@ -16,8 +16,20 @@ export interface RestaurantListItem extends firebaseDocument {
   startingPrice: number;
   visible?: boolean;
 }
-export interface Cart {
-  [key: string]: string;
+
+export interface CartItemSlice {
+  image: string;
+  name: string;
+  price: number;
+  id: string;
+}
+
+export interface CartItem extends CartItemSlice {
+  amount: number;
+}
+export interface CartOrder {
+  name: string;
+  amount: number;
 }
 
 interface Order {
@@ -25,7 +37,7 @@ interface Order {
   name: string;
   orderNum: number;
   region: string;
-  cart: Cart;
+  cart: CartOrder[];
   date: Date;
 }
 

@@ -14,9 +14,15 @@ import {
 import RestaurantsList from '../../restaurantsList/RestaurantsList';
 import ErrorBoundary from '../../errorBoundary/ErrorBoundary';
 
-import { fetchRestaurants } from './mainPageSlice';
+import { fetchRestaurants } from '../../../store/slices/mainPageSlice';
 import { useAppDispatch, useAppSelector } from '../../../store';
 import AnimatedComponent from '../../animatedComponent/AnimatedComponent';
+import { RestaurantListItem } from '../../../global/interfaces';
+import {
+  mainPageFlex,
+  mainPageHeading,
+  mainPageInput,
+} from '../../../theme/styles';
 
 const MainPage = (): JSX.Element => {
   const [term, setTerm] = useState('');
@@ -26,13 +32,13 @@ const MainPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // getDataRestaurans();
     dispatch(fetchRestaurants());
   }, []);
 
-  // const filteredData = (arr) => arr.filter((item) => item);
+  const filteredData = (arr: RestaurantListItem[]) =>
+    arr.filter((restaurant) => restaurant.name.includes(term));
 
-  const data = restaurantsData;
+  const data = filteredData(restaurantsData);
 
   const loadingSpinner =
     restaurantsLoadingStatus === 'loading' ? (
@@ -52,23 +58,15 @@ const MainPage = (): JSX.Element => {
       <AppHeader />
       <Box as='section'>
         <AppBanner />
-        <Flex p='50px 0 ' justify='space-between' align='center'>
-          <Heading
-            as='h5'
-            className='font-bold text-4xl'
-            fontWeight='700'
-            fontSize={breakpointsHeadingMainPage}
-            lineHeight='42px'
-          >
+        <Flex {...mainPageFlex}>
+          <Heading as='h5' {...mainPageHeading}>
             Restaurants
           </Heading>
           <Input
             onChange={(e) => setTerm(e.target.value)}
             value={term}
             placeholder='Search for food and restaurants'
-            w={breackpointsMainPageInput}
-            h='40px'
-            backgroundColor='#FFF'
+            {...mainPageInput}
           />
         </Flex>
         <ErrorBoundary>

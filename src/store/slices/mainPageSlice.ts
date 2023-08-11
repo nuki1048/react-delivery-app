@@ -1,16 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-  DocumentData,
-  QueryDocumentSnapshot,
-  collection,
-  getDocs,
-} from 'firebase/firestore';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { collection, getDocs } from 'firebase/firestore';
 // import foodService from "../../../services/foodService";
-import { db } from '../../../config/firebase';
-import { transformData } from '../../../lib/firebase-utils';
-import { RestaurantListItem } from '../../../global/interfaces';
+import { db } from '../../config/firebase';
+import { transformData } from '../../lib/firebase-utils';
+import { RestaurantListItem } from '../../global/interfaces';
 
 interface initialState {
   restaurantsData: RestaurantListItem[];
@@ -24,14 +19,14 @@ const initialState: initialState = {
 
 export const fetchRestaurants = createAsyncThunk(
   'restaurants/fetchRestaurants',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue }): Promise<RestaurantListItem[]> => {
     try {
       const collectionP = collection(db, 'RESTAURANTS');
       const data = await getDocs(collectionP);
 
       return data.docs.map(transformData<RestaurantListItem>);
     } catch (error) {
-      return rejectWithValue(
+      throw rejectWithValue(
         `Unable to load data from the ${'RESTAURANTS'} collection`
       );
     }
@@ -47,10 +42,13 @@ const mainPageSlice = createSlice({
       .addCase(fetchRestaurants.pending, (state) => {
         state.restaurantsLoadingStatus = 'loading';
       })
-      .addCase(fetchRestaurants.fulfilled, (state, action) => {
-        state.restaurantsData = action.payload;
-        state.restaurantsLoadingStatus = 'idle';
-      })
+      .addCase(
+        fetchRestaurants.fulfilled,
+        (state, action: PayloadAction<RestaurantListItem[]>) => {
+          state.restaurantsData = action.payload;
+          state.restaurantsLoadingStatus = 'idle';
+        }
+      )
       .addCase(fetchRestaurants.rejected, (state) => {
         state.restaurantsLoadingStatus = 'error';
       });
