@@ -4,18 +4,22 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { transformData } from '../../lib/firebase-utils';
-import { MenuItem, RestaurantListItem } from '../../global/interfaces';
+import {
+  MenuItem,
+  OperationStatus,
+  RestaurantListItem,
+} from '../../global/interfaces';
 
 interface initialState {
   menuData: MenuItem[];
-  menuLoadingStatus: 'idle' | 'loading' | 'error';
+  menuLoadingStatus: OperationStatus;
   storeName: string;
   restaurantInfo: Partial<RestaurantListItem>;
 }
 
 const initialState: initialState = {
   menuData: [],
-  menuLoadingStatus: 'idle',
+  menuLoadingStatus: OperationStatus.Idle,
   storeName: '',
   restaurantInfo: {},
 };
@@ -66,30 +70,30 @@ const restaurantsPageSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchRestaurantInfo.pending, (state) => {
-        state.menuLoadingStatus = 'loading';
+        state.menuLoadingStatus = OperationStatus.Loading;
       })
       .addCase(
         fetchRestaurantInfo.fulfilled,
         (state, action: PayloadAction<RestaurantListItem>) => {
           state.restaurantInfo = action.payload;
-          state.menuLoadingStatus = 'idle';
+          state.menuLoadingStatus = OperationStatus.Idle;
         }
       )
       .addCase(fetchRestaurantInfo.rejected, (state) => {
-        state.menuLoadingStatus = 'error';
+        state.menuLoadingStatus = OperationStatus.Error;
       })
       .addCase(fetchMenu.pending, (state) => {
-        state.menuLoadingStatus = 'loading';
+        state.menuLoadingStatus = OperationStatus.Loading;
       })
       .addCase(
         fetchMenu.fulfilled,
         (state, action: PayloadAction<MenuItem[]>) => {
           state.menuData = action.payload;
-          state.menuLoadingStatus = 'idle';
+          state.menuLoadingStatus = OperationStatus.Idle;
         }
       )
       .addCase(fetchMenu.rejected, (state) => {
-        state.menuLoadingStatus = 'error';
+        state.menuLoadingStatus = OperationStatus.Loading;
       });
   },
 });

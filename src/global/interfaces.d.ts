@@ -17,12 +17,8 @@ export interface RestaurantListItem extends firebaseDocument {
   visible?: boolean;
 }
 
-export interface CartItemSlice {
-  image: string;
-  name: string;
-  price: number;
-  id: string;
-}
+export interface CartItemSlice
+  extends Omit<MenuItem, 'storeName' | 'description'> {}
 
 export interface CartItem extends CartItemSlice {
   amount: number;
@@ -43,4 +39,17 @@ interface Order {
 
 export interface CheckoutFormOrder {
   order: Order;
+}
+
+export enum OperationStatus {
+  Loading = 'loading',
+  Error = 'error',
+  Idle = 'idle',
+}
+
+export enum WorkflowStatus {
+  Waiting = 'waiting',
+  loading = 'loading',
+  EnteredToDB = 'enteredToDB',
+  Error = 'error',
 }

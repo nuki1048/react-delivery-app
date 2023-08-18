@@ -5,16 +5,16 @@ import { collection, getDocs } from 'firebase/firestore';
 // import foodService from "../../../services/foodService";
 import { db } from '../../config/firebase';
 import { transformData } from '../../lib/firebase-utils';
-import { RestaurantListItem } from '../../global/interfaces';
+import { OperationStatus, RestaurantListItem } from '../../global/interfaces';
 
 interface initialState {
   restaurantsData: RestaurantListItem[];
-  restaurantsLoadingStatus: string;
+  restaurantsLoadingStatus: OperationStatus;
 }
 
 const initialState: initialState = {
   restaurantsData: [],
-  restaurantsLoadingStatus: 'idle',
+  restaurantsLoadingStatus: OperationStatus.Idle,
 };
 
 export const fetchRestaurants = createAsyncThunk(
@@ -40,17 +40,17 @@ const mainPageSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchRestaurants.pending, (state) => {
-        state.restaurantsLoadingStatus = 'loading';
+        state.restaurantsLoadingStatus = OperationStatus.Loading;
       })
       .addCase(
         fetchRestaurants.fulfilled,
         (state, action: PayloadAction<RestaurantListItem[]>) => {
           state.restaurantsData = action.payload;
-          state.restaurantsLoadingStatus = 'idle';
+          state.restaurantsLoadingStatus = OperationStatus.Idle;
         }
       )
       .addCase(fetchRestaurants.rejected, (state) => {
-        state.restaurantsLoadingStatus = 'error';
+        state.restaurantsLoadingStatus = OperationStatus.Error;
       });
   },
   reducers: {},

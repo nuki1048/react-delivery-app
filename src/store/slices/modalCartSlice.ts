@@ -21,18 +21,20 @@ import {
   CartItem,
   CartItemSlice,
   CheckoutFormOrder,
+  OperationStatus,
+  WorkflowStatus,
 } from '../../global/interfaces';
 
 interface InitialStateCart {
   cart: CartItem[];
-  cartLoadingStatus: 'idle' | 'loading' | 'error';
-  orderStatus: 'waiting' | 'loadindToEnter' | 'EnteredToDB' | 'Error';
+  cartLoadingStatus: OperationStatus;
+  orderStatus: WorkflowStatus;
 }
 
 const initialState: InitialStateCart = {
   cart: [],
-  cartLoadingStatus: 'idle',
-  orderStatus: 'waiting',
+  cartLoadingStatus: OperationStatus.Idle,
+  orderStatus: WorkflowStatus.Waiting,
 };
 export const orderPlaces = createAsyncThunk(
   'cart/orderPlaced',
@@ -83,13 +85,13 @@ const itemsCart = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(orderPlaces.pending, (state) => {
-        state.orderStatus = 'loadindToEnter';
+        state.orderStatus = WorkflowStatus.loading;
       })
       .addCase(orderPlaces.fulfilled, (state) => {
-        state.orderStatus = 'EnteredToDB';
+        state.orderStatus = WorkflowStatus.EnteredToDB;
       })
       .addCase(orderPlaces.rejected, (state) => {
-        state.orderStatus = 'Error';
+        state.orderStatus = WorkflowStatus.Error;
       });
   },
 });
