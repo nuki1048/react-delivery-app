@@ -20,6 +20,7 @@ import {
   restaurantPageFlex,
   restaurantPageHeading,
 } from '../../../theme/styles';
+import AppContainer from '../../appContainer/AppContainer';
 
 function RestaurantPage(): JSX.Element {
   const { storeName } = useParams();
@@ -38,25 +39,29 @@ function RestaurantPage(): JSX.Element {
   return (
     <AnimatedComponent>
       <AppHeader />
-      <Flex {...restaurantPageFlex}>
-        <Heading as='h5' {...restaurantPageHeading}>
-          {restaurantInfo.name}
-        </Heading>
-        <Text
-          {...restaurantInfoRating}
-          position='relative'
-          _before={restaurantItemRatingBefore}
-        >
-          {restaurantInfo.rating}
-        </Text>
-        <Text display={{ base: 'none', md: 'block' }} {...restaurantInfoText}>
-          От {restaurantInfo.startingPrice} ₴
-        </Text>
-        <Text {...restaurantInfoText}>{restaurantInfo.category}</Text>
-      </Flex>
-      <ErrorBoundary>
-        <MenuList />
-      </ErrorBoundary>
+      <AppContainer>
+        <Flex {...restaurantPageFlex}>
+          <Heading as='h5' {...restaurantPageHeading}>
+            {restaurantInfo.name}
+          </Heading>
+          <Text
+            {...restaurantInfoRating}
+            position='relative'
+            _before={restaurantItemRatingBefore}
+          >
+            {restaurantInfo.rating}
+          </Text>
+          <Text display={{ base: 'none', md: 'block' }} {...restaurantInfoText}>
+            От {restaurantInfo.startingPrice} ₴
+          </Text>
+          <Text {...restaurantInfoText}>{restaurantInfo.category}</Text>
+        </Flex>
+      </AppContainer>
+      <AppContainer>
+        <ErrorBoundary>
+          <MenuList />
+        </ErrorBoundary>
+      </AppContainer>
       <AppFooter />
     </AnimatedComponent>
   );

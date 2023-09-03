@@ -27,20 +27,41 @@ export interface CartItemSlice {
 export interface CartItem extends CartItemSlice {
   amount: number;
 }
-export interface CartOrder {
+export interface CartItemOrder {
   name: string;
   amount: number;
+  price: number;
 }
 
-interface Order {
+export interface Order extends firebaseDocument {
+  credentials: Credentials;
+  delivery: Delivery;
+  items: CartItemOrder[];
+  total: Total;
+  userId?: string | undefined;
+}
+
+interface Credentials {
   email: string;
   name: string;
-  orderNum: number;
+  orderNum: string;
+}
+interface Delivery {
   region: string;
-  cart: CartOrder[];
-  date: Date;
+  country: string;
+  index: string;
 }
 
-export interface CheckoutFormOrder {
-  order: Order;
+export interface Total {
+  taxes: number;
+  subtotal: number;
+  total: number;
 }
+
+export interface User {
+  displayName: string;
+  email: string;
+  phoneNumber: string;
+  uid: string;
+}
+export type View = 'profile' | 'edit';

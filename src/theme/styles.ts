@@ -89,6 +89,7 @@ const restaurantItemText = {
 
 const restaurantPageFlex = {
   mt: '43px',
+  mr: 'auto',
   w: { base: 'full', md: '443px' },
   h: '42px',
   align: 'center',
@@ -132,6 +133,7 @@ const mainPageFlex = {
   p: '50px 0 ',
   justify: 'space-between',
   align: 'center',
+  width: '100%',
 };
 
 const checkoutPageWrapper = {

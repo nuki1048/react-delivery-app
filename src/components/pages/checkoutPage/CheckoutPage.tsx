@@ -117,7 +117,13 @@ function CheckoutPage(): JSX.Element {
               </Flex>
             </Box>
           </GridItem>
-          <CheckoutForm amountWithTaxes={+amountWithTaxes} />
+          <CheckoutForm
+            orderPriceInfo={{
+              subtotal: amountWithOutTaxes,
+              taxes: amountTaxes,
+              total: amountWithTaxes,
+            }}
+          />
         </Grid>
       </Box>
     </AnimatedComponent>

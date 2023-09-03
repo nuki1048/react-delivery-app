@@ -18,7 +18,7 @@ function MenuItem({
   id,
 }: MenuItemProps): JSX.Element {
   const toast = useToast();
-  const toastIdRef = useRef<string | number | null>(null);
+  const toastIdRef = useRef<any>(null);
   const dispatch = useDispatch();
 
   const descriptionSlice =

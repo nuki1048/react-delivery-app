@@ -1,3 +1,5 @@
+import { Total } from '../../global/interfaces';
+
 export interface CheckoutFormProps {
-  amountWithTaxes: number;
+  orderPriceInfo: Total;
 }

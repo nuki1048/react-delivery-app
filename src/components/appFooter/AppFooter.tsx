@@ -30,9 +30,9 @@ function AppFooter(): JSX.Element {
             mt={{ base: '20px', md: '0' }}
             justify='space-between'
           >
-            <Image src={instagram} />
-            <Image src={instagram} />
-            <Image src={instagram} />
+            <Image src='/instagram.svg' />
+            <Image src='/twitter.svg' />
+            <Image src='/telegram.svg' />
           </Flex>
         </Flex>
       </AppContainer>

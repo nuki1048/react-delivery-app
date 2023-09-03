@@ -23,6 +23,7 @@ import {
   mainPageHeading,
   mainPageInput,
 } from '../../../theme/styles';
+import AppContainer from '../../appContainer/AppContainer';
 
 const MainPage = (): JSX.Element => {
   const [term, setTerm] = useState('');
@@ -42,7 +43,7 @@ const MainPage = (): JSX.Element => {
 
   const loadingSpinner =
     restaurantsLoadingStatus === 'loading' ? (
-      <Spinner ml='500px' gridColumn='1/4' w='200px' h='200px' />
+      <Spinner gridColumn={2} w={200} h={200} />
     ) : null;
 
   const Error404Message =
@@ -58,22 +59,26 @@ const MainPage = (): JSX.Element => {
       <AppHeader />
       <Box as='section'>
         <AppBanner />
-        <Flex {...mainPageFlex}>
-          <Heading as='h5' {...mainPageHeading}>
-            Restaurants
-          </Heading>
-          <Input
-            onChange={(e) => setTerm(e.target.value)}
-            value={term}
-            placeholder='Search for food and restaurants'
-            {...mainPageInput}
-          />
-        </Flex>
-        <ErrorBoundary>
-          {loadingSpinner}
-          {items}
-          {Error404Message}
-        </ErrorBoundary>
+        <AppContainer>
+          <Flex {...mainPageFlex}>
+            <Heading as='h5' {...mainPageHeading}>
+              Restaurants
+            </Heading>
+            <Input
+              onChange={(e) => setTerm(e.target.value)}
+              value={term}
+              placeholder='Search for food and restaurants'
+              {...mainPageInput}
+            />
+          </Flex>
+        </AppContainer>
+        <AppContainer>
+          <ErrorBoundary>
+            {loadingSpinner}
+            {items}
+            {Error404Message}
+          </ErrorBoundary>
+        </AppContainer>
       </Box>
       <AppFooter />
     </AnimatedComponent>

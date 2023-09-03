@@ -24,7 +24,7 @@ function ModalTemplate({
   const items =
     dataType === 'modalCart'
       ? { w: breackpointsCartWidth, p: breackpointsCartListPadding }
-      : { w: 'loginW', p: breakpointsModalLoginPadding };
+      : { w: '360px', p: breakpointsModalLoginPadding };
   return (
     <Box>
       <Modal

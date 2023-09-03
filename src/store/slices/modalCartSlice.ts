@@ -16,12 +16,8 @@ import {
   collection,
 } from 'firebase/firestore';
 import { db } from '../../config/firebase';
-import { RootState } from '..';
-import {
-  CartItem,
-  CartItemSlice,
-  CheckoutFormOrder,
-} from '../../global/interfaces';
+import { RootState } from '../RootState';
+import { CartItem, CartItemSlice, Order } from '../../global/interfaces';
 
 interface InitialStateCart {
   cart: CartItem[];
@@ -37,14 +33,11 @@ const initialState: InitialStateCart = {
 export const orderPlaces = createAsyncThunk(
   'cart/orderPlaced',
   async (
-    payload: CheckoutFormOrder,
+    payload: Order,
     { rejectWithValue }
   ): Promise<DocumentReference<DocumentData>> => {
     try {
-      const { order } = payload;
-      return await addDoc(collection(db, 'ORDERS'), order);
-
-      // eslint-disable-next-line no-shadow
+      return await addDoc(collection(db, 'ORDERS'), payload);
     } catch (error) {
       throw rejectWithValue(`we can't add this doc on `);
     }

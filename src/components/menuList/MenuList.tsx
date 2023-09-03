@@ -10,7 +10,8 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 import MenuItem from '../menuItem/MenuItem';
 import AnimatedComponent from '../animatedComponent/AnimatedComponent';
 import { fetchMenu } from '../../store/slices/restaurantsPageSlice';
-import { RootState, useAppDispatch, useAppSelector } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { RootState } from '../../store/RootState';
 import { MenuItem as MenuItemInterface } from '../../global/interfaces';
 import { menuListGrid, menuListLink } from '../../theme/styles';
 
@@ -57,7 +58,7 @@ function MenuList(): JSX.Element {
   const items = menuLoadingStatus === 'idle' ? renderItems(filteredData) : null;
   const loadingSpinner =
     menuLoadingStatus === 'loading' ? (
-      <Spinner width='200px' height='200px' gridColumn='1/4' />
+      <Spinner width='200px' height='200px' display='flex' gridColumn={2} />
     ) : null;
   const error = menuLoadingStatus === 'error' ? <ErrorMessage /> : null;
   return (

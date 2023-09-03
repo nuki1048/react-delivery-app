@@ -23,7 +23,6 @@ import { useFormik } from 'formik';
 import valid from 'card-validator';
 
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import applePay from '../../assets/applePay.svg';
 
 import VisaIcon from '../icons/VisaIcon';
@@ -31,8 +30,9 @@ import MasterCardIcon from '../icons/MasterCardIcon';
 import AmericanExpressIcon from '../icons/AmericanExpressIcon';
 import { clearCart, orderPlaces } from '../../store/slices/modalCartSlice';
 import { CheckoutFormProps } from './CheckoutForm.props';
-import { RootState, useAppDispatch, useAppSelector } from '../../store';
-import { CartItem, CartOrder } from '../../global/interfaces';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { RootState } from '../../store/RootState';
+import { CartItem, CartItemOrder, Order } from '../../global/interfaces';
 import {
   checkoutFormAfter,
   checkoutFormApplePayButton,
@@ -43,6 +43,7 @@ import {
   checkoutFormInput,
   checkoutFormSelect,
 } from '../../theme/styles';
+import { auth } from '../../config/firebase';
 
 const data = [
   'Odessa Oblast',
@@ -65,72 +66,102 @@ const data = [
   'Volyn region',
 ];
 
-function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
+interface FormValues {
+  email: string;
+  nameOnCard: string;
+  region: string;
+  index: string;
+  cardExpiration: string;
+  cvcCode: string;
+}
+
+function CheckoutForm({ orderPriceInfo }: CheckoutFormProps): JSX.Element {
   const navigate = useNavigate();
 
   const [type, setType] = useState<string>('');
   const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state: RootState) => state.cart);
 
-  const createCartObj = () => {
-    const cartPositions: CartOrder[] = [];
+  const createCartObj = (): CartItemOrder[] => {
+    const cartPositions: CartItemOrder[] = [];
     // eslint-disable-next-line array-callback-return
     cart.map((item: CartItem) => {
       if (item.amount >= 0) {
-        const cartItem = { name: item.name, amount: item.amount };
+        const cartItem = {
+          name: item.name,
+          amount: item.amount,
+          price: item.price,
+        };
         cartPositions.push(cartItem);
       }
     });
     return cartPositions;
   };
+
+  const createCartOrder = (
+    values: Omit<FormValues, 'cvcCode' | 'cardExpiration'>
+  ): Order => {
+    const numberOrder = crypto.randomUUID();
+    const cartItems = createCartObj();
+    return {
+      credentials: {
+        email: values.email,
+        name: values.nameOnCard,
+        orderNum: numberOrder,
+      },
+      delivery: {
+        region: values.region,
+        country: 'Ukraine',
+        index: values.index,
+      },
+      total: orderPriceInfo,
+      items: cartItems,
+    } as Order;
+  };
   const formik = useFormik({
     initialValues: {
       email: '',
       creditCard: '',
-      YYMM: '',
-      CVC: '',
+      cardExpiration: '',
+      cvcCode: 0,
       nameOnCard: '',
       region: '',
       index: '',
     },
-    validationSchema: Yup.object({
+    validationSchema: Yup.object<FormValues>({
       email: Yup.string()
         .email('Incorrectly entered mail!')
         .required('Required field'),
       creditCard: Yup.string()
         .max(16, 'Minimum length 16!')
-        .test(
-          'test-number', // this is used internally by yup
-          'The card number is not valid', // validation message
-          (value) => {
-            setType(String(valid?.number(value)?.card?.type));
-            return valid.number(value).isValid;
-          }
-        )
+        .test('test-number', 'The card number is not valid', (value) => {
+          setType(String(valid?.number(value)?.card?.type));
+          return valid.number(value).isValid;
+        })
         .required('Required field'),
-      CVC: Yup.string()
+      cvcCode: Yup.string()
         .min(3, 'Minimum length 3!')
         .max(4, 'Maximum length 4!')
         .test(
-          'test-number', // this is used internally by yup
-          'The card number is not valid', // validation message
+          'cvcCode',
+          'The card number is not valid',
           (value) => valid.cvv(value).isValid
         )
 
         .required('Required field'),
-      YYMM: Yup.string()
+      cardExpiration: Yup.string()
         .max(4, 'Maximum length 4!')
         .test(
-          'test-number', // this is used internally by yup
-          'Карта просроченна', // validation message
+          'cardExpiration',
+          'Your card is expired',
           (value) => valid.expirationDate(value).isValid
         ),
 
       nameOnCard: Yup.string()
         .required('Required field')
         .test(
-          'test-number', // this is used internally by yup
-          'First name last name entered incorrectly.', // validation message
+          'nameOnCard',
+          'First name last name entered incorrectly.',
           (value) => valid.cardholderName(value).isValid
         ),
       region: Yup.string().required('Required field'),
@@ -138,34 +169,22 @@ function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
         .required('Required field')
         .min(5, 'Minimum length 5!')
         .test(
-          'test-number', // this is used internally by yup
-          'First name last name entered incorrectly', // validation message
+          'index',
+          'First name last name entered incorrectly',
           (value) => valid.postalCode(value).isValid
         ),
     }),
     onSubmit: (values) => {
-      if (amountWithTaxes) {
-        // eslint-disable-next-line no-unused-vars
-        const numberOrder = Math.floor(Math.random() * (12414 - 1000) + 1000);
-        const cartPos = createCartObj();
-        dispatch(
-          orderPlaces({
-            order: {
-              email: values.email,
-              name: values.nameOnCard,
-              orderNum: numberOrder,
-              region: values.region,
-              cart: cartPos,
-              date: new Date(),
-            },
-          })
-        );
-        navigate(`/orderThanks/${numberOrder}`);
-        dispatch(clearCart());
+      const orderObject = createCartOrder(values);
+      if (auth) {
+        orderObject.userId = auth.currentUser?.uid;
       }
+      dispatch(orderPlaces(orderObject));
+      navigate(`/orderThanks/${orderObject.credentials.orderNum}`);
+      dispatch(clearCart());
     },
   });
-  const typeCardBrand = (cardType: string): JSX.Element => {
+  const getIconCardBrand = (cardType: string): JSX.Element => {
     switch (cardType) {
       case 'mastercard':
         return <InputRightElement children={<MasterCardIcon />} />;
@@ -178,7 +197,7 @@ function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
     }
   };
 
-  const iconCard = typeCardBrand(type);
+  const iconCard = getIconCardBrand(type);
 
   return (
     <GridItem {...checkoutFormGridItem}>
@@ -236,36 +255,40 @@ function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
               </InputGroup>
               <InputGroup>
                 <Input
-                  name='YYMM'
+                  name='cardExpiration'
                   type='number'
                   onChange={formik.handleChange}
-                  value={formik.values.YYMM}
+                  value={formik.values.cardExpiration}
                   onBlur={formik.handleBlur}
                   placeholder='MM/YY'
                   borderRadius='0px 0px 0px 8px'
                 />
 
-                {formik.touched.YYMM && formik.errors.YYMM ? (
+                {formik.touched.cardExpiration &&
+                formik.errors.cardExpiration ? (
                   <>
                     <br />
                     <Box color='#E53E3E' mt='15px'>
-                      {formik.errors.YYMM}
+                      {formik.errors.cardExpiration}
                     </Box>
                   </>
                 ) : null}
                 <Input
-                  name='CVC'
+                  name='cvcCode'
                   type='number'
                   onChange={formik.handleChange}
-                  value={formik.values.CVC}
+                  value={formik.values.cvcCode}
                   onBlur={formik.handleBlur}
                   placeholder='CVC'
                   borderRadius='0px 0px 8px 0px'
                 />
-                {formik.touched.CVC && formik.errors.CVC ? (
-                  <Box color='#E53E3E' mt='15px'>
-                    {formik.errors.CVC}
-                  </Box>
+                {formik.touched.cvcCode && formik.errors.cvcCode ? (
+                  <>
+                    <br />
+                    <Box color='#E53E3E' mt='15px'>
+                      {formik.errors.cvcCode}
+                    </Box>
+                  </>
                 ) : null}
               </InputGroup>
             </FormControl>
@@ -321,9 +344,9 @@ function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
             <Button
               type='submit'
               {...checkoutFormButtonSubmit}
-              isDisabled={!amountWithTaxes}
+              isDisabled={!orderPriceInfo.total}
             >
-              To pay ₴{amountWithTaxes}
+              To pay ₴{orderPriceInfo.total}
             </Button>
           </VStack>
         </form>
@@ -331,9 +354,5 @@ function CheckoutForm({ amountWithTaxes }: CheckoutFormProps): JSX.Element {
     </GridItem>
   );
 }
-
-CheckoutForm.propTypes = {
-  amountWithTaxes: PropTypes.number.isRequired,
-};
 
 export default CheckoutForm;

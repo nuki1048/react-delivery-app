@@ -26,10 +26,22 @@ import {
   appHeaderInputGroup,
   appHeaderWrapper,
 } from '../../theme/styles';
-
+import { useAppDispatch, useAppSelector } from '../../store';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../config/firebase';
+import { signOut as signOutRedux } from '../../store/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 function AppHeader(): JSX.Element {
   const modalLogin = useDisclosure();
   const modalCart = useDisclosure();
+  const navigate = useNavigate();
+
+  const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
+  const navigateToCabinet = () => {
+    navigate('/cabinet');
+  };
   return (
     <header>
       <AppContainer>
@@ -72,9 +84,16 @@ function AppHeader(): JSX.Element {
             </MenuList>
           </Menu>
           <ButtonGroup display={{ base: 'none', md: 'flex' }}>
-            <Button onClick={modalLogin.onOpen} {...appHeaderButton}>
-              Sign in
-            </Button>
+            {!user && (
+              <Button onClick={modalLogin.onOpen} {...appHeaderButton}>
+                Sign in
+              </Button>
+            )}
+            {user && (
+              <Button onClick={navigateToCabinet} {...appHeaderButton}>
+                Cabinet
+              </Button>
+            )}
             <ModalTemplate
               isOpen={modalLogin.isOpen}
               onClose={modalLogin.onClose}
