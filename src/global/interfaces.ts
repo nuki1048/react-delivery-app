@@ -61,6 +61,7 @@ export interface User {
   uid: string;
 }
 export type View = 'profile' | 'edit';
+
 export enum OperationStatus {
   Loading = 'loading',
   Error = 'error',
