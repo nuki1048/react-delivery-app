@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Order } from '../../global/interfaces';
+import { OperationStatus, Order } from '../../global/interfaces';
 import {
   DocumentReference,
   Query,
@@ -25,12 +25,12 @@ interface UserInfo {
 interface initialStateCabinet {
   orderList: Order[];
   userInfo: UserInfo | null;
-  loadingStatus: 'loading' | 'idle' | 'error';
+  loadingStatus: OperationStatus;
 }
 
 const initialState: initialStateCabinet = {
   orderList: [],
-  loadingStatus: 'idle',
+  loadingStatus: OperationStatus.Idle,
   userInfo: null,
 };
 
@@ -111,24 +111,24 @@ const cabinetSlice = createSlice({
   extraReducers: (builder) =>
     builder
       .addCase(fetchOrderList.pending, (state) => {
-        state.loadingStatus = 'loading';
+        state.loadingStatus = OperationStatus.Loading;
       })
       .addCase(fetchOrderList.fulfilled, (state, action) => {
         state.orderList = action.payload;
-        state.loadingStatus = 'idle';
+        state.loadingStatus = OperationStatus.Idle;
       })
       .addCase(fetchOrderList.rejected, (state) => {
-        state.loadingStatus = 'error';
+        state.loadingStatus = OperationStatus.Error;
       })
       .addCase(fetchUserInfo.pending, (state) => {
-        state.loadingStatus = 'loading';
+        state.loadingStatus = OperationStatus.Loading;
       })
       .addCase(fetchUserInfo.fulfilled, (state, { payload }) => {
-        state.loadingStatus = 'idle';
+        state.loadingStatus = OperationStatus.Idle;
         state.userInfo = payload;
       })
       .addCase(fetchUserInfo.rejected, (state) => {
-        state.loadingStatus = 'error';
+        state.loadingStatus = OperationStatus.Error;
       })
       .addCase(changeUserInfo.fulfilled, (state, { payload }) => {
         state.userInfo = payload;
