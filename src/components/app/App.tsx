@@ -6,6 +6,13 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import { Navigate } from 'react-router-dom';
 import { checkAuth } from '../../store/slices/authSlice';
 import Cabinet from '../pages/cabinet/Cabinet';
+import {
+  checkItemInLocalStorage,
+  getItemFormLocalStorage,
+  setItemInLocalStorage,
+} from '../../utils/local-storage-utils';
+import { CartItem } from '../../global/interfaces';
+import { getCartFromCookies } from '../../store/slices/modalCartSlice';
 
 const MainPage = lazy(() => import('../pages/mainPage/MainPage'));
 const RestaurantPage = lazy(
@@ -24,6 +31,15 @@ function App(): JSX.Element {
   const location = useLocation();
 
   useEffect(() => {
+    const localStorageCart = checkItemInLocalStorage('cart')
+      ? getItemFormLocalStorage<CartItem[] | null>('cart')
+      : null;
+
+    if (!localStorageCart) {
+      setItemInLocalStorage<CartItem[]>('cart', []);
+    }
+    dispatch(getCartFromCookies(localStorageCart as CartItem[]));
+
     dispatch(checkAuth());
   }, []);
 
@@ -41,11 +57,7 @@ function App(): JSX.Element {
             <Route
               path='/checkout'
               element={
-                cart.length === 0 ? (
-                  <Navigate to='/' replace={false} />
-                ) : (
-                  <CheckoutPage />
-                )
+                cart ? <Navigate to='/' replace={false} /> : <CheckoutPage />
               }
             />
             <Route path='*' element={<ErrorPage />} />

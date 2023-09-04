@@ -24,6 +24,7 @@ import {
   Order,
   WorkflowStatus,
 } from '../../global/interfaces';
+import { setItemInLocalStorage } from '../../utils/local-storage-utils';
 
 interface InitialStateCart {
   cart: CartItem[];
@@ -49,6 +50,23 @@ export const orderPlaces = createAsyncThunk(
     }
   }
 );
+
+export const changeAmountItemInCart = createAsyncThunk<
+  void,
+  { operation: 'add' | 'remove'; item: CartItemSlice },
+  { state: RootState }
+>('cart/addItem', (payload, { dispatch, getState }): void => {
+  if (payload.operation === 'add') {
+    dispatch(addNewItem(payload.item));
+  } else {
+    dispatch(removeItem(payload.item));
+  }
+
+  const { cart } = getState().cart;
+
+  setItemInLocalStorage('cart', cart);
+});
+
 const itemsCart = createSlice({
   name: 'itemsCart',
   initialState,
@@ -78,6 +96,9 @@ const itemsCart = createSlice({
     clearCart: (state) => {
       state.cart = [];
     },
+    getCartFromCookies: (state, action: PayloadAction<CartItem[]>) => {
+      state.cart = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -105,4 +126,5 @@ export const getTotalCartAmount = createSelector(
 
 const { actions, reducer } = itemsCart;
 export default reducer;
-export const { addNewItem, removeItem, clearCart } = actions;
+export const { addNewItem, removeItem, clearCart, getCartFromCookies } =
+  actions;

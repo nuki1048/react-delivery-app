@@ -3,11 +3,11 @@ import { useRef } from 'react';
 import { Button } from '@chakra-ui/button';
 import { Box, Flex, Heading, Text } from '@chakra-ui/layout';
 import { useToast } from '@chakra-ui/react';
-import { useDispatch } from 'react-redux';
 import { breakpointsItem } from '../../theme/breakpoints';
 
-import { addNewItem } from '../../store/slices/modalCartSlice';
+import { changeAmountItemInCart } from '../../store/slices/modalCartSlice';
 import { MenuItemProps } from './MenuItem.props';
+import { useAppDispatch } from '../../store';
 // import { ShopContext } from "../../context/shop-context";
 
 function MenuItem({
@@ -19,7 +19,7 @@ function MenuItem({
 }: MenuItemProps): JSX.Element {
   const toast = useToast();
   const toastIdRef = useRef<any>(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const descriptionSlice =
     description.length > 50 ? `${description.slice(0, 50)}...` : description;
@@ -37,8 +37,8 @@ function MenuItem({
       price,
       id,
     };
+    dispatch(changeAmountItemInCart({ item: cartItem, operation: 'add' }));
     addToast();
-    dispatch(addNewItem(cartItem));
   };
 
   return (
