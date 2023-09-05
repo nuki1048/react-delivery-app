@@ -1,6 +1,9 @@
  You can watch this project at this [link](https://react-delivery-app-seven.vercel.app/)
 
-This project represents a food delivery service similar to Uber Eats or Glovo. In this project, you can place food orders and create a personal profile. Within your personal profile, you can view all your orders and make changes to some of your personal information. The project features a responsive design for mobile, tablet, and desktop versions (although, unfortunately, not yet in the personal cabinet).
+
+This project is a food delivery service similar to Uber Eats or Glovo. It allows users to order food and create a personal profile. Within the personal profile, users can view their order history and update some of their information. The project features a responsive design for mobile, tablet, and desktop versions (although it's not yet implemented in the personal cabinet).
+
+In this project, I initially used JavaScript and later migrated to TypeScript. Additionally, there's a clever use of cookies that enhances the user experience.
 
 The technologies/libraries used in this project include:
 
